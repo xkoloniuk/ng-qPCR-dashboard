@@ -15,19 +15,19 @@
 
 
     <div class="text-xs font-italic text-gray-800 align-self-start pl-3">
-      <div class="flex align-items-center gap-2" *ngIf="plates$ | async as samples">
-        <span class="w-2rem text-right" >{{samples?.length + ' '}}</span>
-        <span>{{samples.length > 1 ? 'plates' : 'plate'}}</span>
+      <div class="flex align-items-center gap-2" *ngIf="plates$ | async as plates">
+        <span class="w-2rem text-right" >{{plates?.length + ' '}}</span>
+        <span>{{plates.length > 1 ? 'plates' : 'plate'}}</span>
       </div>
-      <div class="flex align-items-center gap-2" *ngIf="plates$ | async as samples">
-        <span class="w-2rem text-right" >{{samples?.length + ' '}}</span>
+      <div class="flex align-items-center gap-2" >
+        <span class="w-2rem text-right" >{{reactions + ' '}}</span>
 
-        <span>{{samples.length > 1 ? 'reactions' : 'reaction'}}</span>
+        <span>{{reactions > 1 ? 'reactions' : 'reaction'}}</span>
       </div>
-      <div class="flex align-items-center gap-2" *ngIf="plates$ | async as samples">
-        <span class="w-2rem text-right" >{{samples?.length + ' '}}</span>
+      <div class="flex align-items-center gap-2" >
+        <span class="w-2rem text-right" >{{samples + ' '}}</span>
 
-        <span>{{samples.length > 1 ? 'samples' : 'sample'}}</span>
+        <span>{{samples > 1 ? 'samples' : 'sample'}}</span>
       </div>
     </div>
 

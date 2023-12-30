@@ -2,7 +2,7 @@ import {Component, inject, Input, OnInit} from '@angular/core';
 import {selectFiles, selectFilesByTarget} from "../../app/store/app.selectors";
 import {select, Store} from "@ngrx/store";
 import {AsyncPipe, NgIf} from "@angular/common"
-import {map, Observable} from "rxjs";
+import {map, Observable, tap} from "rxjs";
 import {qPCRFile} from "../../views/shell/shell.component";
 
 @Component({
@@ -23,11 +23,34 @@ export class TargetCardComponent implements OnInit {
 
   plates$?: Observable<qPCRFile[]>
   reactions$?: Observable<qPCRFile[]>
-  samples$?: Observable<qPCRFile[]>
+
+  public samples: number = 0;
+  public reactions: number = 0;
 
   ngOnInit() {
-    this.plates$ = this.store.pipe(select(selectFilesByTarget(this.target)))
+    this.plates$ = this.store.pipe(select(selectFilesByTarget(this.target))).pipe(tap(files => {
 
+      const samplesSet: Set<string> = new Set()
+
+      files.forEach(file => {
+
+        // calculate all unique samples
+        const indexOfSample = file.columns.indexOf('Sample')
+        const allSamples = file.data.map(wellData => wellData[indexOfSample])
+        allSamples.forEach(sample => samplesSet.add(sample))
+
+        // TODO: consider refactor to avoid double calc here and in store selector
+        // calculate all reactions
+        const indexOfTarget = file.columns.indexOf('Target')
+        this.reactions += file.data.filter(wellData => wellData[indexOfTarget] === this.target && wellData[indexOfSample] !== 'NTC' && wellData[indexOfSample] !== '').length;
+
+      })
+
+      samplesSet.delete('NTC')
+      samplesSet.delete('')
+      this.samples = samplesSet.size
+
+    }))
   }
 
 
