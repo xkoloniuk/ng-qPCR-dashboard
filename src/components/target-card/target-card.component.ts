@@ -16,16 +16,15 @@ import {qPCRFile} from "../../views/shell/shell.component";
   standalone: true
 
 })
-export class TargetCardComponent implements OnInit{
+export class TargetCardComponent implements OnInit {
   @Input() target: string = '';
 
   private store = inject(Store)
 
   ssampless$?: Observable<qPCRFile[]>
 
-  ngOnInit (){
-  this.ssampless$ = this.store.pipe(select(selectFilesByTarget(this.target)))
-  // ssampless$ = this.store.pipe(select(selectFiles))
+  ngOnInit() {
+    this.ssampless$ = this.store.pipe(select(selectFilesByTarget(this.target)))
 
   }
 
