@@ -1,0 +1,38 @@
+<div class="header">
+  <div class="start">
+    <p-fileUpload
+      mode="basic"
+      accept=".csv"
+      [multiple]="true"
+      (onUpload)="onBasicUploadAuto($event)"
+      [customUpload]="true"
+      (uploadHandler)="customHandler($event.files)"
+      [auto]="true" chooseLabel="Add qPCR csv files">
+    </p-fileUpload>
+
+  </div>
+  <div class="page-container w-100">
+
+    <div class="p-6">
+      {{qpcrFiles().length + ' files were added'}}
+
+    </div>
+
+    <div class="p-6">
+      {{targets().length + ' targets were found'}}
+      <div class="flex flex-wrap gap-2">
+
+        <ng-container *ngFor="let target of targets()">
+
+          <app-target-card [target]="target"></app-target-card>
+        </ng-container>
+      </div>
+    </div>
+    <div class="p-6">
+      {{samples().length + ' samples were found'}}
+    </div>
+
+  </div>
+</div>
+
+
