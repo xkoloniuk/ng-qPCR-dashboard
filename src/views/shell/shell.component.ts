@@ -25,6 +25,7 @@ export class ShellComponent {
   public qpcrFiles: WritableSignal<Array<qPCRFile>> = signal([]);
   private showProgressBar?: boolean;
 
+  myTargets = ['RVCV 3507:3508', 'ARTV 3507:3509', 'POLS 3507:3510', 'WECV 3507:3349']
 
   public targets: Signal<string[]> = computed(() => {
     let targets: Array<string> = []
