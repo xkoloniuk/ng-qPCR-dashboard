@@ -21,10 +21,12 @@ export class TargetCardComponent implements OnInit {
 
   private store = inject(Store)
 
-  ssampless$?: Observable<qPCRFile[]>
+  plates$?: Observable<qPCRFile[]>
+  reactions$?: Observable<qPCRFile[]>
+  samples$?: Observable<qPCRFile[]>
 
   ngOnInit() {
-    this.ssampless$ = this.store.pipe(select(selectFilesByTarget(this.target)))
+    this.plates$ = this.store.pipe(select(selectFilesByTarget(this.target)))
 
   }
 

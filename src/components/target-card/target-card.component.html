@@ -1,7 +1,7 @@
-<div class="w-12rem h-7rem flex flex-column align-items-start justify-content-around border-1 border-primary-500 border-round p-2 gap-2">
+<div class="w-12rem h-7rem flex flex-column align-items-start justify-content-around border-2 border-primary-500 border-round p-2 gap-2 hover:shadow-3 hover:bg-blue-50 cursor-pointer">
   <div class="flex flex-column align-items-start">
 
-    <span class="align-self-start">{{target}}</span>
+    <span class="font-medium align-self-start">{{target}}</span>
     <span class="text-xs font-italic text-indigo-500 align-self-start">target</span>
   </div>
 
@@ -15,16 +15,16 @@
 
 
     <div class="text-xs font-italic text-gray-800 align-self-start pl-3">
-      <div class="flex align-items-center gap-2" *ngIf="ssampless$ | async as samples">
+      <div class="flex align-items-center gap-2" *ngIf="plates$ | async as samples">
         <span class="w-2rem text-right" >{{samples?.length + ' '}}</span>
         <span>{{samples.length > 1 ? 'plates' : 'plate'}}</span>
       </div>
-      <div class="flex align-items-center gap-2" *ngIf="ssampless$ | async as samples">
+      <div class="flex align-items-center gap-2" *ngIf="plates$ | async as samples">
         <span class="w-2rem text-right" >{{samples?.length + ' '}}</span>
 
         <span>{{samples.length > 1 ? 'reactions' : 'reaction'}}</span>
       </div>
-      <div class="flex align-items-center gap-2" *ngIf="ssampless$ | async as samples">
+      <div class="flex align-items-center gap-2" *ngIf="plates$ | async as samples">
         <span class="w-2rem text-right" >{{samples?.length + ' '}}</span>
 
         <span>{{samples.length > 1 ? 'samples' : 'sample'}}</span>

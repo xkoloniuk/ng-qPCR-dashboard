@@ -1,5 +1,5 @@
 // app.selectors.ts
-import { createFeatureSelector, createSelector } from '@ngrx/store';
+import {createFeatureSelector, createSelector} from '@ngrx/store';
 import {qPCRFile} from "../../views/shell/shell.component";
 import {AppState} from "./app.reducers";
 
@@ -12,8 +12,8 @@ export const selectFiles = createSelector(
 );
 export const selectFilesByTarget = (target: string) => createSelector(
   selectFiles,
-  (allFiles) =>  allFiles.filter((file) => {
-     return file.data.some((wellData) => wellData[2] === target)
-    })
+  (allFiles) => allFiles.filter((file) => {
+    const targetIndex = file.columns.indexOf('Target')
+    return file.data.some((wellData) => wellData[targetIndex] === target)
+  })
 );
-

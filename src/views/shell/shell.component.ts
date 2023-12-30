@@ -25,8 +25,6 @@ export class ShellComponent {
   public qpcrFiles: WritableSignal<Array<qPCRFile>> = signal([]);
   private showProgressBar?: boolean;
 
-  myTargets = ['RVCV 3507:3508', 'ARTV 3507:3509', 'POLS 3507:3510', 'WECV 3507:3349']
-
   public targets: Signal<string[]> = computed(() => {
     let targets: Array<string> = []
     this.qpcrFiles().forEach(f => targets.push(...this.getUniques('Target', f)))
@@ -51,7 +49,9 @@ export class ShellComponent {
 
   getUniques(string: string, file: qPCRFile) {
     const index = file.columns.indexOf(string)
-    return Array.from(new Set(file.data.map(d => d[index])))
+    const set = new Set(file.data.map(d => d[index]))
+    set.delete('')
+    return Array.from(set)
   }
 
   onBasicUploadAuto($event: FileUploadEvent) {
