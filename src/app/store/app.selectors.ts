@@ -14,9 +14,20 @@ export const selectFiles = createSelector(
   selectAppState,
   (state: AppState) => state.files
 );
+export const selectFilesByTarget = (target: string) => createSelector(
+  selectFiles,
+  (allFiles) => {
+    return allFiles.filter((file) => {
+     return file.data.some((wellData) => wellData[2] === target)
+    })
+  }
+);
+
+
 
 // // Create a selector to get a specific file based on its ID
 // export const selectFileById = (fileId: number) => createSelector(
 //   selectFiles,
 //   (files: MyInterface[]) => files.find(file => file.id === fileId)
 // );
+

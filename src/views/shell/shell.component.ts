@@ -154,7 +154,7 @@ export class ShellComponent {
 
       this.#store.dispatch(addFile({file: add}))
 
-      this.#store.select(selectFiles).subscribe(d=> console.log(d))
+      this.#store.select(selectFiles).subscribe(d=> console.log(d[0]))
 
 
 
