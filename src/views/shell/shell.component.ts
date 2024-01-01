@@ -109,9 +109,9 @@ export class ShellComponent {
       let data: Array<Array<string>> = []
 
       csvLines.forEach((csvLine, index) => {
-
+        // split line from CSV file into array
         const csValuesArr = csvLine.split(',')
-
+        // check for null
         if (!csValuesArr[0]) {
           return
         }
@@ -135,27 +135,38 @@ export class ShellComponent {
           'Melt step'
         ]
 
-
+        // if the first value represents one of info keys, then process it properly
         if (csValuesArr[0] && fileInfoKeys.includes(csValuesArr[0])) {
-          // console.log(csValuesArr[0])
 
+          // convert value for date key into Date format
+          if (csValuesArr[0] === 'Run Started' || csValuesArr[0] === 'Run Ended') {
+            const dateValue = new Date(Date.parse(csValuesArr[1]))
+            // @ts-ignore
+            fileInfo[csValuesArr[0]] = dateValue
+            return
+          }
+          //  remaining assign as they are
           // @ts-ignore
           fileInfo[csValuesArr[0]] = csValuesArr[1]
           return
         }
 
-        // get actual column names
+        // catch line that represents columns to get actual column names
         if (csValuesArr[0] && csValuesArr[0] === 'Well') {
           columns = csValuesArr
           return
         }
 
+        // remaining lines should be well data, one well per a line
         data.push(csValuesArr)
 
 
       })
 
-      const add: qPCRFile = {fileInfo, columns, data}
+
+      const counts = this.generateReport({columns, data})
+
+      const add: qPCRFile = {fileInfo, counts, columns, data} as qPCRFile
 
       this.#store.dispatch(addFile({file: add}))
 
@@ -163,47 +174,29 @@ export class ShellComponent {
         val.push(add)
         return val
       })
-
-
     });
-
-
-    // description header
-    //
-    // arrayOrRows
-    //   .filter((_, i) => i < 19)
-    //   .forEach((i) => {
-    //     const row = i.split(',');
-    //     this.qPCRfile[row[0]] = row[1];
-    //   });
-    //
-    // for (let i = 20; i < arrayOrRows.length; i++) {
-    //   const obj: { [key: string]: unknown } = {};
-    //   arrayOrRows[i].split(',').forEach((cell, index) => {
-    //     if (cell[index] === undefined) obj[headers[index]] = '';
-    //     obj[headers[index]] = cell;
-    //   });
-    //   this.qPCRfile.data.push(obj);
-    // }
-    //
-    // console.log(this.qPCRfile.data);
-    //
-    // const setOfTargets = new Set(
-    //   this.qPCRfile.data.map((i) => i?.Target ?? false)
-    // );
-    // const setOfSampleTypes = new Set(
-    //   this.qPCRfile.data.map((i) => i?.Content ?? false)
-    // );
-    //
-    // this.qPCRfile.targets = Array.from(setOfTargets).sort();
-    // this.qPCRfile.sampleTypes = Array.from(setOfSampleTypes).sort();
   }
 
-//   extractHeaderInfo (txt: string): any{} => {
-//     const csvLine = txt.split(',');
-//     return {csvLine[0] : csvLine[1]}
-// }
 
+  generateReport(inputData: Partial<qPCRFile>) {
+    console.log(inputData.columns)
+    console.log(inputData.data)
+
+    const indexOfSample = inputData?.columns?.indexOf('Sample')
+    const indexOfTarget = inputData?.columns?.indexOf('Target')
+    let samples;
+    let targets;
+    if (indexOfSample) {
+      samples = inputData?.data?.map(wellData => wellData[indexOfSample]);
+    }
+    if (indexOfTarget) {
+      targets = inputData?.data?.map(wellData => wellData[indexOfTarget]);
+    }
+const uniqueSamples = Array.from(new Set(samples))
+const uniqueTargets = Array.from(new Set(targets))
+
+    return {uniqueSamples, uniqueTargets}
+  }
 }
 
 
@@ -216,9 +209,15 @@ export class ShellComponent {
 // [key in typeof qPCRFileInfoKeys[number]]: string
 // }
 
+interface customqPCRCounts {
+  uniqueSamples: string[];
+  uniqueTargets: string[]
+}
+
 export interface qPCRFile {
   fileInfo: qPCRFileInfo;
   columns: Array<string>;
+  counts: customqPCRCounts;
   data: Array<Array<string>>
 }
 

@@ -34,13 +34,13 @@ export class TargetCardComponent implements OnInit {
     this.plates$ = this.store.pipe(select(selectFilesByTarget(this.target))).pipe(tap(files => {
 
       const samplesSet: Set<string> = new Set()
+      this.reactions = 0;
 
       files.forEach(file => {
-
-        // calculate all unique samples
+        // console.log(file)
+        // get all unique samples
         const indexOfSample = file.columns.indexOf('Sample')
-        const allSamples = file.data.map(wellData => wellData[indexOfSample])
-        allSamples.forEach(sample => samplesSet.add(sample))
+        file.counts.uniqueSamples.forEach(sample => samplesSet.add(sample))
 
         // TODO: consider refactor to avoid double calc here and in store selector
         // calculate all reactions
@@ -50,6 +50,7 @@ export class TargetCardComponent implements OnInit {
       })
 
       samplesSet.delete('NTC')
+      samplesSet.delete('NRT')
       samplesSet.delete('')
       this.samples = samplesSet.size
 

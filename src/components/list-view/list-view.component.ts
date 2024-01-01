@@ -3,24 +3,32 @@ import {qPCRFile} from "../../views/shell/shell.component";
 import {select, Store} from "@ngrx/store";
 import {selectFilesByTarget} from "../../app/store/app.selectors";
 import {Observable} from "rxjs";
-import {AsyncPipe, NgIf} from "@angular/common";
-import {ActivatedRoute} from "@angular/router";
+import {AsyncPipe, DatePipe, NgForOf, NgIf} from "@angular/common";
+import {ActivatedRoute, RouterLink} from "@angular/router";
+import {TableModule} from "primeng/table";
+import {TargetCardComponent} from "../target-card/target-card.component";
 
 @Component({
   selector: 'app-list-view',
   templateUrl: './list-view.component.html',
   styleUrls: ['./list-view.component.sass'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AsyncPipe,
-    NgIf
+    NgIf,
+    NgForOf,
+    TableModule,
+    DatePipe,
+    RouterLink,
+    TargetCardComponent
   ],
-  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListViewComponent implements OnInit{
 public target?;
 
   public plates$?: Observable<qPCRFile[]>;
+  public tableData: qPCRFile[] = [];
 
   constructor(private store: Store, private route: ActivatedRoute) {
   this.target = this.route.snapshot.paramMap.get('targetName');
@@ -30,9 +38,9 @@ public target?;
   ngOnInit(){
     if (this.target) {
 
-    this.plates$ = this.store.pipe(select(selectFilesByTarget(this.target)))
+    this.store.pipe(select(selectFilesByTarget(this.target))).subscribe(data => this.tableData = data)
     }
-    console.log(this)
+    console.log(this.tableData)
     // this.plates$ = this.store.pipe(select(selectFilesBySample(this.sample)))
     }
 

@@ -17,3 +17,7 @@ export const selectFilesByTarget = (target: string) => createSelector(
     return file.data.some((wellData) => wellData[targetIndex] === target)
   })
 );
+export const selectFileByFileName = (fileName: string) => createSelector(
+  selectFiles,
+  (allFiles) => allFiles.find((file) => file.fileInfo["File Name"] === fileName)
+);

@@ -1,0 +1,30 @@
+<div>{{ 'Plate files for ' + fileName }}</div>
+<div class="container flex justify-content-center w-11 p-4">
+
+  <p-table [value]="tableData" styleClass="p-datatable-striped" [tableStyle]="{ 'min-width': '60rem' }">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Well</th>
+        <th>Target</th>
+        <th>Sample Type</th>
+        <th>Sample</th>
+        <th>Cq</th>
+        <th>Melt temp</th>
+        <th>Melt peak</th>
+
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-well>
+      <tr>
+        <td>{{ well[0] }}</td>
+        <td>{{ well[2] }}</td>
+        <td>{{ well[3] }}</td>
+        <td>{{ well[5] }}</td>
+        <td>{{ customNumFormat(well[8]) }}</td>
+        <td>{{ customNumFormat(well[13]) }}</td>
+        <td>{{ customNumFormat(well[14]) }}</td>
+
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

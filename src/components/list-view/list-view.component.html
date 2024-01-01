@@ -1,7 +1,19 @@
-<div>Hello List Component</div>
+<div>{{ 'Plate files for ' + target }} </div>
 
-<div class="flex align-items-center gap-2" *ngIf="plates$ | async as plates">
-  <span class="w-2rem text-right" >{{plates?.length + ' '}}</span>
-  <span>{{plates.length > 1 ? 'plates' : 'plate'}}</span>
-  <span>plates if true</span>
-</div>
+<p-table [value]="tableData" [tableStyle]="{ 'min-width': '50rem' }">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>File Name</th>
+      <th>Date</th>
+
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-file>
+    <tr [routerLink]="['/run', file.fileInfo['File Name']]"
+    >
+      <td>{{ file.fileInfo['File Name'] }}</td>
+      <td>{{ file.fileInfo['Run Started'] | date}} </td>
+
+    </tr>
+  </ng-template>
+</p-table>
