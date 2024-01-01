@@ -4,15 +4,16 @@ import {FileUploadEvent, FileUploadModule} from 'primeng/fileupload';
 import {readConfiguration} from "@angular/compiler-cli";
 import {TargetCardComponent} from "../../components/target-card/target-card.component";
 import {Store} from "@ngrx/store";
-import {addFile} from "../../app/store/app.actions";
+import {addFile, resetStore} from "../../app/store/app.actions";
 import {logMessages} from "@angular-devkit/build-angular/src/tools/esbuild/utils";
 import {selectFiles} from "../../app/store/app.selectors";
 import {tap} from "rxjs";
+import {RouterLink, RouterOutlet} from "@angular/router";
 
 @Component({
   selector: 'ng-q-dashboard-shell',
   standalone: true,
-  imports: [CommonModule, FileUploadModule, TargetCardComponent],
+  imports: [CommonModule, FileUploadModule, TargetCardComponent, RouterLink, RouterOutlet],
   templateUrl: './shell.component.html',
   styleUrls: ['./shell.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -54,20 +55,23 @@ export class ShellComponent {
     return Array.from(set)
   }
 
-  onBasicUploadAuto($event: FileUploadEvent) {
-    // console.log('onBasicUploadAuto CALLED')
-    for (const file of $event.files) {
-      const add: NamedFile = {key: file.name, file: file};
-      this.selectedFiles.update(val => {
-        val.push(add)
-        return val
-      });
-    }
-  }
+  // onBasicUploadAuto($event: FileUploadEvent) {
+  //   console.log('onBasicUploadAuto CALLED')
+  //   // for (const file of $event.files) {
+  //   //   const add: NamedFile = {key: file.name, file: file};
+  //   //   this.selectedFiles.update(val => {
+  //   //     val.push(add)
+  //   //     return val
+  //   //   });
+  //   // }
+  // }
 
   async customHandler(files: File[]) {
     this.showProgressBar = true;
-    // console.log('customHandler CALLED')
+    console.log('customHandler CALLED')
+
+    this.#store.dispatch(resetStore())
+    this.qpcrFiles.set([])
 
     files.forEach((file: File) => {
       this.processCsvFile(file);
@@ -155,14 +159,8 @@ export class ShellComponent {
 
       this.#store.dispatch(addFile({file: add}))
 
-      this.#store.select(selectFiles).subscribe(d=> console.log(d[0]))
-
-
-
       this.qpcrFiles.update(val => {
         val.push(add)
-
-
         return val
       })
 

@@ -1,0 +1,7 @@
+<div>Hello List Component</div>
+
+<div class="flex align-items-center gap-2" *ngIf="plates$ | async as plates">
+  <span class="w-2rem text-right" >{{plates?.length + ' '}}</span>
+  <span>{{plates.length > 1 ? 'plates' : 'plate'}}</span>
+  <span>plates if true</span>
+</div>

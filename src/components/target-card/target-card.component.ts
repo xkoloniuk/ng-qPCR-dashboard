@@ -1,19 +1,22 @@
-import {Component, inject, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, Input, OnInit} from '@angular/core';
 import {selectFiles, selectFilesByTarget} from "../../app/store/app.selectors";
 import {select, Store} from "@ngrx/store";
 import {AsyncPipe, NgIf} from "@angular/common"
 import {map, Observable, tap} from "rxjs";
 import {qPCRFile} from "../../views/shell/shell.component";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-target-card',
   templateUrl: './target-card.component.html',
   styleUrls: ['./target-card.component.sass'],
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AsyncPipe,
-    NgIf
+    NgIf,
+    RouterLink
   ],
-  standalone: true
 
 })
 export class TargetCardComponent implements OnInit {
@@ -54,4 +57,7 @@ export class TargetCardComponent implements OnInit {
   }
 
 
+  openListView() {
+
+  }
 }

@@ -4,7 +4,6 @@
       mode="basic"
       accept=".csv"
       [multiple]="true"
-      (onUpload)="onBasicUploadAuto($event)"
       [customUpload]="true"
       (uploadHandler)="customHandler($event.files)"
       [auto]="true" chooseLabel="Add qPCR csv files">
@@ -25,7 +24,9 @@
 
         <ng-container *ngFor="let target of targets()">
 
-          <app-target-card [target]="target"></app-target-card>
+          <app-target-card
+            [routerLink]="['/target', target]"
+            [target]="target"></app-target-card>
         </ng-container>
       </div>
     </div>
@@ -35,5 +36,4 @@
 
   </div>
 </div>
-
 

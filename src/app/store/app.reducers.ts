@@ -6,7 +6,7 @@ import {
   createSelector,
   MetaReducer, on
 } from '@ngrx/store';
-import {addFile} from "./app.actions";
+import {addFile, resetStore} from "./app.actions";
 import {qPCRFile} from "../../views/shell/shell.component";
 
 
@@ -26,6 +26,8 @@ export const appReducers = createReducer(
       files: [...state.files, file],
     };
   }),
+  on(resetStore, (state) => initialState )
+
   // on(removeFile, (state,{index  }) => {
   //   return {
   //     ...state,
