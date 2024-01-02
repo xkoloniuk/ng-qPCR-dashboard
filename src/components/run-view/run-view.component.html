@@ -1,7 +1,7 @@
 <div>{{ 'Plate files for ' + fileName }}</div>
 <div class="container flex justify-content-center w-11 p-4">
 
-  <p-table [value]="objectsArray" styleClass="p-datatable-striped" [tableStyle]="{ 'min-width': '60rem' }">
+  <p-table [value]="tableData" styleClass="p-datatable-striped" [tableStyle]="{ 'min-width': '60rem' }">
     <ng-template pTemplate="header">
       <tr>
         <th pSortableColumn="Well" >Well <p-columnFilter type="text" field="Well" display="menu"></p-columnFilter> <p-sortIcon field="Well"></p-sortIcon></th>
@@ -38,8 +38,8 @@
         <td>{{ well.Content }}</td>
         <td>{{ well.Sample }}</td>
         <td>{{ customNumFormat(well.Cq) }}</td>
-        <td>{{ customNumFormat(well.Melt_Temperature) }}</td>
-        <td>{{ customNumFormat(well.Peak_Height) }}</td>
+        <td>{{ customNumFormat(well['Melt Temperature']) }}</td>
+        <td>{{ customNumFormat(well['Peak Height']) }}</td>
 
       </tr>
     </ng-template>

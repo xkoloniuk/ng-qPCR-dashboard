@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs";
-import {qPCRFile} from "../../views/shell/shell.component";
+import {qPCRFile, qPCRrecord} from "../../views/shell/shell.component";
 import {select, Store} from "@ngrx/store";
 import {ActivatedRoute} from "@angular/router";
 import {selectFileByFileName,} from "../../app/store/app.selectors";
@@ -25,10 +25,11 @@ export class RunViewComponent implements OnInit {
   public fileName?;
 
   public plate$?: Observable<qPCRFile>;
-  public tableData?: any;
+  public tableData: qPCRrecord[] = [];
   public tableColumns?: string[];
   objectsArray?: any;
-  targets: any[] | undefined;
+  targets?: any[];
+  samples?: any[];
 
   constructor(private store: Store, private route: ActivatedRoute) {
     this.fileName = this.route.snapshot.paramMap.get('runName');
@@ -38,34 +39,15 @@ export class RunViewComponent implements OnInit {
     if (this.fileName) {
 
       this.store.pipe(select(selectFileByFileName(this.fileName))).subscribe(data => {
+    console.log(this.tableData)
         if (data?.data !== undefined) {
           // console.log(data)
-          this.tableData = data.data
+          this.tableData = [...data.data]
         }
         if (data !== undefined) {
           this.tableColumns = data.columns
-
           this.targets = data.counts.uniqueTargets
-          //
-
-          // Assuming 'data' and 'names' are defined
-
-
-// Transform data and names into an array of objects
-          let arrayOfObjects: any[] = data.data.map((dataArray) => {
-            let obj: any = {};
-
-            dataArray.forEach((value, index) => {
-              const key = data.columns[index].split(' ').join('_').replace(/\.|\(|\)/g,'');
-              obj[key] = value;
-            });
-
-            return obj;
-          });
-          console.log(arrayOfObjects)
-          this.objectsArray = arrayOfObjects
-          //
-
+          this.samples = data.counts.uniqueSamples
         }
       })
     }

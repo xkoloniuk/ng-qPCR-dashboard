@@ -42,10 +42,9 @@ export class TargetCardComponent implements OnInit {
         const indexOfSample = file.columns.indexOf('Sample')
         file.counts.uniqueSamples.forEach(sample => samplesSet.add(sample))
 
-        // TODO: consider refactor to avoid double calc here and in store selector
         // calculate all reactions
-        const indexOfTarget = file.columns.indexOf('Target')
-        this.reactions += file.data.filter(wellData => wellData[indexOfTarget] === this.target && wellData[indexOfSample] !== 'NTC' && wellData[indexOfSample] !== '').length;
+
+        this.reactions += file.data.filter(wellData => wellData.Target === this.target && wellData.Sample !== 'NTC' && wellData.Sample !== '').length;
 
       })
 

@@ -28,13 +28,13 @@ export class ShellComponent {
 
   public targets: Signal<string[]> = computed(() => {
     let targets: Array<string> = []
-    this.qpcrFiles().forEach(f => targets.push(...this.getUniques('Target', f)))
+    this.qpcrFiles().forEach(f => targets.push(...f.counts.uniqueTargets))
     return Array.from(new Set(targets))
   });
 
   public samples: Signal<string[]> = computed(() => {
     let targets: Array<string> = []
-    this.qpcrFiles().forEach(f => targets.push(...this.getUniques('Sample', f)))
+    this.qpcrFiles().forEach(f => targets.push(...f.counts.uniqueSamples))
     return Array.from(new Set(targets))
   });
 
@@ -47,13 +47,6 @@ export class ShellComponent {
   // };
 
   // #fileReader = inject(FileToTextReaderService);
-
-  getUniques(string: string, file: qPCRFile) {
-    const index = file.columns.indexOf(string)
-    const set = new Set(file.data.map(d => d[index]))
-    set.delete('')
-    return Array.from(set)
-  }
 
   // onBasicUploadAuto($event: FileUploadEvent) {
   //   console.log('onBasicUploadAuto CALLED')
@@ -106,7 +99,7 @@ export class ShellComponent {
       };
 
       let columns: string[] = []
-      let data: Array<Array<string>> = []
+      let data: Array<qPCRrecord> = []
 
       csvLines.forEach((csvLine, index) => {
         // split line from CSV file into array
@@ -157,10 +150,42 @@ export class ShellComponent {
           return
         }
 
+
         // remaining lines should be well data, one well per a line
-        data.push(csValuesArr)
 
 
+        // Transform data and names into an array of objects
+
+        let obj: qPCRrecord = {
+          Well: '',
+          Fluor: '',
+          Target: '',
+          Content: '',
+          Replicate: '',
+          Sample: '',
+          'Biological Set Name': '',
+          'Well Note': '',
+          Cq: '',
+          'Starting Quantity (SQ)': '',
+          'Cq Mean': '',
+          'Cq Std. Dev': '',
+          'SQ Std. Dev': '',
+          'Melt Temperature': '',
+          'Peak Height': '',
+          'Begin Temperature': '',
+          'End Temperature': '',
+          Call: '',
+          'End RFU': '',
+        }
+
+
+        csValuesArr.forEach((value, index) => {
+          const key = columns[index];
+          // @ts-ignore
+          obj[key] = value
+        });
+
+        data.push(obj)
       })
 
 
@@ -182,18 +207,11 @@ export class ShellComponent {
     console.log(inputData.columns)
     console.log(inputData.data)
 
-    const indexOfSample = inputData?.columns?.indexOf('Sample')
-    const indexOfTarget = inputData?.columns?.indexOf('Target')
-    let samples;
-    let targets;
-    if (indexOfSample) {
-      samples = inputData?.data?.map(wellData => wellData[indexOfSample]);
-    }
-    if (indexOfTarget) {
-      targets = inputData?.data?.map(wellData => wellData[indexOfTarget]);
-    }
-const uniqueSamples = Array.from(new Set(samples))
-const uniqueTargets = Array.from(new Set(targets))
+    const samples = inputData?.data?.map(wellData => wellData.Sample);
+    const targets = inputData?.data?.map(wellData => wellData.Target);
+
+    const uniqueSamples = Array.from(new Set(samples))
+    const uniqueTargets = Array.from(new Set(targets))
 
     return {uniqueSamples, uniqueTargets}
   }
@@ -218,7 +236,7 @@ export interface qPCRFile {
   fileInfo: qPCRFileInfo;
   columns: Array<string>;
   counts: customqPCRCounts;
-  data: Array<Array<string>>
+  data: Array<qPCRrecord>
 }
 
 
@@ -247,7 +265,7 @@ interface NamedFile {
   file: File
 }
 
-interface qPCRrecord {
+export interface qPCRrecord {
   Well: string;
   Fluor: string;
   Target: string;

@@ -13,8 +13,7 @@ export const selectFiles = createSelector(
 export const selectFilesByTarget = (target: string) => createSelector(
   selectFiles,
   (allFiles) => allFiles.filter((file) => {
-    const targetIndex = file.columns.indexOf('Target')
-    return file.data.some((wellData) => wellData[targetIndex] === target)
+    return file.data.some((wellData) => wellData.Target === target)
   })
 );
 export const selectFileByFileName = (fileName: string) => createSelector(
