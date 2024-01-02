@@ -16,6 +16,12 @@ export const selectFilesByTarget = (target: string) => createSelector(
     return file.data.some((wellData: qPCRrecord) => wellData.Target === target)
   })
 );
+export const selectFilesBySample = (sample: string) => createSelector(
+  selectFiles,
+  (allFiles) => allFiles.filter((file) => {
+    return file.data.some((wellData: qPCRrecord) => wellData.Sample === sample)
+  })
+);
 export const selectFileByFileName = (fileName: string) => createSelector(
   selectFiles,
   (allFiles) => allFiles.find((file) => file.fileInfo["File Name"] === fileName)

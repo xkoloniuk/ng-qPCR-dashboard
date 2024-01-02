@@ -1,1 +1,4 @@
 <p>samples-view works!</p>
+<ul *ngFor="let sample of countsPerSample">
+  <li>{{sample.sample + ' : ' + sample.count}}</li>
+</ul>

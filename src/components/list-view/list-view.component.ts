@@ -24,26 +24,19 @@ import {qPCRFile} from "../../interfaces/interface";
     TargetCardComponent
   ],
 })
-export class ListViewComponent implements OnInit{
-public target?;
-
-  public plates$?: Observable<qPCRFile[]>;
+export class ListViewComponent implements OnInit {
+  public target?;
   public tableData: qPCRFile[] = [];
 
   constructor(private store: Store, private route: ActivatedRoute) {
-  this.target = this.route.snapshot.paramMap.get('targetName');
+    this.target = this.route.snapshot.paramMap.get('targetName');
+  }
 
-}
-
-  ngOnInit(){
+  ngOnInit() {
     if (this.target) {
-
-    this.store.pipe(select(selectFilesByTarget(this.target))).subscribe(data => this.tableData = data)
+      this.store.pipe(select(selectFilesByTarget(this.target))).subscribe(data => this.tableData = data)
     }
-    console.log(this.tableData)
-    // this.plates$ = this.store.pipe(select(selectFilesBySample(this.sample)))
-    }
-
+  }
 
 
 }
