@@ -4,13 +4,35 @@
   <p-table [value]="objectsArray" styleClass="p-datatable-striped" [tableStyle]="{ 'min-width': '60rem' }">
     <ng-template pTemplate="header">
       <tr>
-        <th>Well</th>
-        <th>Target</th>
-        <th>Sample Type</th>
-        <th>Sample</th>
-        <th>Cq</th>
-        <th>Melt temp</th>
-        <th>Melt peak</th>
+        <th pSortableColumn="Well" >Well <p-columnFilter type="text" field="Well" display="menu"></p-columnFilter> <p-sortIcon field="Well"></p-sortIcon></th>
+        <th pSortableColumn="Target" >Target
+
+
+          <p-columnFilter field="Target" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+            <ng-template pTemplate="header">
+              <div class="px-3 pt-3 pb-0">
+                <span class="font-bold">Target Picker</span>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+              <p-multiSelect [ngModel]="value" [options]="targets" placeholder="Any" (onChange)="filter($event.value)" optionLabel="name">
+                <ng-template let-option pTemplate="item">
+                  <div class="inline-block vertical-align-middle">
+                    <span class="ml-1 mt-1">{{ option }}</span>
+                  </div>
+                </ng-template>
+              </p-multiSelect>
+            </ng-template>
+          </p-columnFilter>
+
+
+
+          <p-sortIcon field="Target"></p-sortIcon></th>
+        <th pSortableColumn="Content" >Sample Type <p-columnFilter type="text" field="Content" display="menu"></p-columnFilter> <p-sortIcon field="Content"></p-sortIcon></th>
+        <th pSortableColumn="Sample" >Sample <p-columnFilter type="text" field="Sample" display="menu"></p-columnFilter> <p-sortIcon field="Sample"></p-sortIcon></th>
+        <th pSortableColumn="Cq" >Cq <p-columnFilter type="text" field="Cq" display="menu"></p-columnFilter> <p-sortIcon field="Cq"></p-sortIcon></th>
+        <th pSortableColumn="'Melt Temperature'" >Melt temp <p-columnFilter type="text" field="'Melt Temperature'" display="menu"></p-columnFilter> <p-sortIcon field="'Melt Temperature'"></p-sortIcon></th>
+        <th pSortableColumn="'Peak Height'" >Melt peak <p-columnFilter type="text" field="'Peak Height'" display="menu"></p-columnFilter> <p-sortIcon field="'Peak Height'"></p-sortIcon></th>
 
       </tr>
     </ng-template>

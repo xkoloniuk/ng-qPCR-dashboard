@@ -3,9 +3,10 @@ import {Observable} from "rxjs";
 import {qPCRFile} from "../../views/shell/shell.component";
 import {select, Store} from "@ngrx/store";
 import {ActivatedRoute} from "@angular/router";
-import {selectFileByFileName, selectFilesByTarget} from "../../app/store/app.selectors";
+import {selectFileByFileName,} from "../../app/store/app.selectors";
 import {TableModule} from "primeng/table";
-import {DecimalPipe, formatDate, formatNumber} from "@angular/common";
+import {MultiSelectModule} from "primeng/multiselect";
+import {FormsModule} from "@angular/forms";
 
 
 @Component({
@@ -16,7 +17,8 @@ import {DecimalPipe, formatDate, formatNumber} from "@angular/common";
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     TableModule,
-    DecimalPipe
+    MultiSelectModule,
+    FormsModule,
   ]
 })
 export class RunViewComponent implements OnInit {
@@ -26,6 +28,7 @@ export class RunViewComponent implements OnInit {
   public tableData?: any;
   public tableColumns?: string[];
   objectsArray?: any;
+  targets: any[] | undefined;
 
   constructor(private store: Store, private route: ActivatedRoute) {
     this.fileName = this.route.snapshot.paramMap.get('runName');
@@ -42,7 +45,8 @@ export class RunViewComponent implements OnInit {
         if (data !== undefined) {
           this.tableColumns = data.columns
 
-        //
+          this.targets = data.counts.uniqueTargets
+          //
 
           // Assuming 'data' and 'names' are defined
 
@@ -61,7 +65,7 @@ export class RunViewComponent implements OnInit {
           });
           console.log(arrayOfObjects)
           this.objectsArray = arrayOfObjects
-        //
+          //
 
         }
       })

@@ -8,18 +8,21 @@ import {StoreModule} from '@ngrx/store';
 import {appReducers} from "./store/app.reducers";
 import {RunViewComponent} from '../components/run-view/run-view.component';
 import {ButtonModule} from "primeng/button";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
     AppComponent,
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        ShellComponent,
-        StoreModule.forRoot({app: appReducers}),
-        ButtonModule,
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    ShellComponent,
+    StoreModule.forRoot({app: appReducers}),
+    ButtonModule,
+    BrowserAnimationsModule
+
+  ],
   providers: [],
   exports: [],
   bootstrap: [AppComponent]
