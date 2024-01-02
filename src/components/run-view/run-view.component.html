@@ -1,7 +1,7 @@
 <div>{{ 'Plate files for ' + fileName }}</div>
 <div class="container flex justify-content-center w-11 p-4">
 
-  <p-table [value]="tableData" styleClass="p-datatable-striped" [tableStyle]="{ 'min-width': '60rem' }">
+  <p-table [value]="objectsArray" styleClass="p-datatable-striped" [tableStyle]="{ 'min-width': '60rem' }">
     <ng-template pTemplate="header">
       <tr>
         <th>Well</th>
@@ -16,13 +16,13 @@
     </ng-template>
     <ng-template pTemplate="body" let-well>
       <tr>
-        <td>{{ well[0] }}</td>
-        <td>{{ well[2] }}</td>
-        <td>{{ well[3] }}</td>
-        <td>{{ well[5] }}</td>
-        <td>{{ customNumFormat(well[8]) }}</td>
-        <td>{{ customNumFormat(well[13]) }}</td>
-        <td>{{ customNumFormat(well[14]) }}</td>
+        <td>{{ well.Well }}</td>
+        <td>{{ well.Target }}</td>
+        <td>{{ well.Content }}</td>
+        <td>{{ well.Sample }}</td>
+        <td>{{ customNumFormat(well.Cq) }}</td>
+        <td>{{ customNumFormat(well['Melt Temperature']) }}</td>
+        <td>{{ customNumFormat(well['Peak Height']) }}</td>
 
       </tr>
     </ng-template>

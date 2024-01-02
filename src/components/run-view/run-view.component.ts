@@ -25,6 +25,7 @@ export class RunViewComponent implements OnInit {
   public plate$?: Observable<qPCRFile>;
   public tableData?: any;
   public tableColumns?: string[];
+  objectsArray?: any;
 
   constructor(private store: Store, private route: ActivatedRoute) {
     this.fileName = this.route.snapshot.paramMap.get('runName');
@@ -40,6 +41,28 @@ export class RunViewComponent implements OnInit {
         }
         if (data !== undefined) {
           this.tableColumns = data.columns
+
+        //
+
+          // Assuming 'data' and 'names' are defined
+
+
+// Transform data and names into an array of objects
+          let arrayOfObjects: any[] = data.data.map((dataArray) => {
+            let obj: any = {};
+
+            // Assuming both data array and names array have the same length (12 in this case)
+            dataArray.forEach((value, index) => {
+              const key = data.columns[index];
+              obj[key] = value;
+            });
+
+            return obj;
+          });
+          console.log(arrayOfObjects)
+          this.objectsArray = arrayOfObjects
+        //
+
         }
       })
     }
