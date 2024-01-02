@@ -1,7 +1,7 @@
 // app.selectors.ts
 import {createFeatureSelector, createSelector} from '@ngrx/store';
-import {qPCRFile} from "../../views/shell/shell.component";
 import {AppState} from "./app.reducers";
+import {qPCRrecord} from "../../interfaces/interface";
 
 
 export const selectAppState = createFeatureSelector<AppState>('app');
@@ -13,7 +13,7 @@ export const selectFiles = createSelector(
 export const selectFilesByTarget = (target: string) => createSelector(
   selectFiles,
   (allFiles) => allFiles.filter((file) => {
-    return file.data.some((wellData) => wellData.Target === target)
+    return file.data.some((wellData: qPCRrecord) => wellData.Target === target)
   })
 );
 export const selectFileByFileName = (fileName: string) => createSelector(

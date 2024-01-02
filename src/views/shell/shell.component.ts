@@ -1,14 +1,12 @@
 import {ChangeDetectionStrategy, Component, computed, inject, Signal, signal, WritableSignal} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FileUploadEvent, FileUploadModule} from 'primeng/fileupload';
-import {readConfiguration} from "@angular/compiler-cli";
+import {FileUploadModule} from 'primeng/fileupload';
 import {TargetCardComponent} from "../../components/target-card/target-card.component";
 import {Store} from "@ngrx/store";
 import {addFile, resetStore} from "../../app/store/app.actions";
-import {logMessages} from "@angular-devkit/build-angular/src/tools/esbuild/utils";
-import {selectFiles} from "../../app/store/app.selectors";
-import {tap} from "rxjs";
+
 import {RouterLink, RouterOutlet} from "@angular/router";
+import {qPCRFile, qPCRFileInfo, qPCRrecord} from "../../interfaces/interface";
 
 @Component({
   selector: 'ng-q-dashboard-shell',
@@ -227,37 +225,9 @@ export class ShellComponent {
 // [key in typeof qPCRFileInfoKeys[number]]: string
 // }
 
-interface customqPCRCounts {
-  uniqueSamples: string[];
-  uniqueTargets: string[]
-}
-
-export interface qPCRFile {
-  fileInfo: qPCRFileInfo;
-  columns: Array<string>;
-  counts: customqPCRCounts;
-  data: Array<qPCRrecord>
-}
 
 
-export interface qPCRFileInfo {
-  'File Name': string;
-  'Created By User': string;
-  'Notes': string;
-  'ID': string;
-  'Run Started': string;
-  'Run Ended': string;
-  'Sample Vol': string;
-  'Lid Temp': string;
-  'Protocol File Name': string;
-  'Plate Setup File Name': string;
-  'Base Serial Number': string;
-  'Optical Head Serial Number': string;
-  'CFX Maestro Version': string;
-  'Well group': string;
-  'Amplification step': string;
-  'Melt step': string
-}
+
 
 
 interface NamedFile {
@@ -265,24 +235,4 @@ interface NamedFile {
   file: File
 }
 
-export interface qPCRrecord {
-  Well: string;
-  Fluor: string;
-  Target: string;
-  Content: string;
-  Replicate?: string;
-  Sample: string;
-  'Biological Set Name'?: string;
-  'Well Note'?: string;
-  Cq: string;
-  'Starting Quantity (SQ)'?: string;
-  'Cq Mean'?: string;
-  'Cq Std. Dev'?: string;
-  'SQ Std. Dev'?: string;
-  'Melt Temperature'?: string;
-  'Peak Height'?: string;
-  'Begin Temperature'?: string;
-  'End Temperature'?: string;
-  Call?: string;
-  'End RFU'?: string;
-}
+

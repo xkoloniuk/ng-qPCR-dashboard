@@ -7,7 +7,7 @@ import {
   MetaReducer, on
 } from '@ngrx/store';
 import {addFile, resetStore} from "./app.actions";
-import {qPCRFile} from "../../views/shell/shell.component";
+import {qPCRFile} from "../../interfaces/interface";
 
 
 

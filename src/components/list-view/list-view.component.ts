@@ -1,5 +1,4 @@
 import {ChangeDetectionStrategy, Component, inject, Input, OnInit} from '@angular/core';
-import {qPCRFile} from "../../views/shell/shell.component";
 import {select, Store} from "@ngrx/store";
 import {selectFilesByTarget} from "../../app/store/app.selectors";
 import {Observable} from "rxjs";
@@ -7,6 +6,7 @@ import {AsyncPipe, DatePipe, NgForOf, NgIf} from "@angular/common";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {TableModule} from "primeng/table";
 import {TargetCardComponent} from "../target-card/target-card.component";
+import {qPCRFile} from "../../interfaces/interface";
 
 @Component({
   selector: 'app-list-view',

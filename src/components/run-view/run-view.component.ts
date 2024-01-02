@@ -1,12 +1,12 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs";
-import {qPCRFile, qPCRrecord} from "../../views/shell/shell.component";
 import {select, Store} from "@ngrx/store";
 import {ActivatedRoute} from "@angular/router";
 import {selectFileByFileName,} from "../../app/store/app.selectors";
 import {TableModule} from "primeng/table";
 import {MultiSelectModule} from "primeng/multiselect";
 import {FormsModule} from "@angular/forms";
+import {qPCRFile, qPCRrecord} from "../../interfaces/interface";
 
 
 @Component({

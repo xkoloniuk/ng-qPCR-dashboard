@@ -3,8 +3,8 @@ import {selectFiles, selectFilesByTarget} from "../../app/store/app.selectors";
 import {select, Store} from "@ngrx/store";
 import {AsyncPipe, NgIf} from "@angular/common"
 import {map, Observable, tap} from "rxjs";
-import {qPCRFile} from "../../views/shell/shell.component";
 import {RouterLink} from "@angular/router";
+import {qPCRFile} from "../../interfaces/interface";
 
 @Component({
   selector: 'app-target-card',
