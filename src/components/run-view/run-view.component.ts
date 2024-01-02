@@ -55,9 +55,8 @@ export class RunViewComponent implements OnInit {
           let arrayOfObjects: any[] = data.data.map((dataArray) => {
             let obj: any = {};
 
-            // Assuming both data array and names array have the same length (12 in this case)
             dataArray.forEach((value, index) => {
-              const key = data.columns[index];
+              const key = data.columns[index].split(' ').join('_').replace(/\.|\(|\)/g,'');
               obj[key] = value;
             });
 

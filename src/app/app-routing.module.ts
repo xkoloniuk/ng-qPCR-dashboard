@@ -7,6 +7,8 @@ import {select, Store} from "@ngrx/store";
 import {selectFilesByTarget} from "./store/app.selectors";
 import {map, take} from "rxjs";
 import {RunViewComponent} from "../components/run-view/run-view.component";
+import {SampleCardComponent} from "../components/sample-card/sample-card.component";
+import {SamplesViewComponent} from "../components/samples-view/samples-view.component";
 
 function targetExists(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
@@ -47,7 +49,9 @@ const router = inject(Router)
 const routes: Routes = [
   {path: '', component: ShellComponent},
   {path: 'target/:targetName', component: ListViewComponent, canActivate: [targetExists]},
-  {path: 'run/:runName', component: RunViewComponent}
+  {path: 'run/:runName', component: RunViewComponent},
+  {path: 'samples/:sample', component: SampleCardComponent},
+  {path: 'samples', component: SamplesViewComponent},
 ];
 
 @NgModule({
