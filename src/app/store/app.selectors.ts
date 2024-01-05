@@ -1,5 +1,5 @@
 // app.selectors.ts
-import {createFeatureSelector, createSelector} from '@ngrx/store';
+import {createFeatureSelector, createSelector, MemoizedProjection, MemoizedSelector} from '@ngrx/store';
 import {AppState} from "./app.reducers";
 import {qPCRrecord} from "../../interfaces/interface";
 
@@ -26,3 +26,7 @@ export const selectFileByFileName = (fileName: string) => createSelector(
   selectFiles,
   (allFiles) => allFiles.find((file) => file.fileInfo["File Name"] === fileName)
 );
+
+export const selectSamplesNames = () => createSelector(
+  selectFiles,
+  (allFiles) => allFiles.flatMap(file => file.counts.uniqueSamples).flat());

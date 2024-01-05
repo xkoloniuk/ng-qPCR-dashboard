@@ -2,8 +2,14 @@ import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {qPCRFile, qPCRrecord} from "../../interfaces/interface";
 import {select, Store} from "@ngrx/store";
 import {ActivatedRoute} from "@angular/router";
-import {selectFiles, selectFilesByTarget} from "../../app/store/app.selectors";
+import {
+  selectFiles,
+  selectFilesBySample,
+  selectFilesByTarget,
+  selectSamplesNames
+} from "../../app/store/app.selectors";
 import {NgForOf} from "@angular/common";
+import {logMessages} from "@angular-devkit/build-angular/src/tools/esbuild/utils";
 
 @Component({
   selector: 'app-samples-view',
@@ -26,27 +32,16 @@ export class SamplesViewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.pipe(select(selectFiles)).subscribe(files => {
+    this.store.pipe(select(selectSamplesNames)).subscribe(samples => {
+    if(samples.length) {
 
-      files.forEach(file => {
-          file.counts.uniqueSamples.forEach(sample => this.samples.add(sample))
+    }
 
-        file.data.forEach( row => {
-            const key = row.Sample
-            const sample  = this.countsPerSample?.find(rec => rec.sample === key)
-            if (sample) {
-              ++sample.count
-            } else {
-              this.countsPerSample?.push({sample: key, count: 1})
-            }
-          })
-        }
-      )
-        console.log(this.countsPerSample)
-
-
-    })
+    } )
   }
 
 
+  getPlatesCount(sample: string) {
+    return this.store.pipe(select(selectFilesBySample(sample))).subscribe(data => data.length);
+  }
 }
