@@ -1,10 +1,10 @@
 import {ChangeDetectionStrategy, Component, inject, Input, OnInit} from '@angular/core';
-import {selectFiles, selectFilesByTarget} from "../../app/store/app.selectors";
-import {select, Store} from "@ngrx/store";
 import {AsyncPipe, NgIf} from "@angular/common"
-import {map, Observable, tap} from "rxjs";
+import {Observable, tap} from "rxjs";
 import {RouterLink} from "@angular/router";
 import {qPCRFile} from "../../interfaces/interface";
+import {GlobalState} from "../../app/store_xs/store.state";
+import {Store} from "@ngxs/store";
 
 @Component({
   selector: 'app-target-card',
@@ -31,7 +31,8 @@ export class TargetCardComponent implements OnInit {
   public reactions: number = 0;
 
   ngOnInit() {
-    this.plates$ = this.store.pipe(select(selectFilesByTarget(this.target))).pipe(tap(files => {
+    // this.plates$ = this.store.pipe(select(selectFilesByTarget(this.target))).pipe(tap(files => {
+    this.plates$ = this.store.select(GlobalState.selectFilesByTarget(this.target)).pipe(tap(files => {
 
       const samplesSet: Set<string> = new Set()
       this.reactions = 0;

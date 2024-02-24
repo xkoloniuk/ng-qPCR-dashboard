@@ -2,11 +2,12 @@ import {ChangeDetectionStrategy, Component, computed, inject, Signal, signal, Wr
 import {CommonModule} from '@angular/common';
 import {FileUploadModule} from 'primeng/fileupload';
 import {TargetCardComponent} from "../../components/target-card/target-card.component";
-import {Store} from "@ngrx/store";
-import {addFile, resetStore} from "../../app/store/app.actions";
+
 
 import {RouterLink, RouterOutlet} from "@angular/router";
 import {qPCRFile, qPCRFileInfo, qPCRrecord} from "../../interfaces/interface";
+import {Store} from "@ngxs/store";
+import {AddQPCRFile, ResetState} from "../../app/store_xs/store.actions";
 
 @Component({
   selector: 'ng-q-dashboard-shell',
@@ -61,7 +62,7 @@ export class ShellComponent {
     this.showProgressBar = true;
     console.log('customHandler CALLED')
 
-    this.#store.dispatch(resetStore())
+    this.#store.dispatch(new ResetState())
     this.qpcrFiles.set([])
 
     files.forEach((file: File) => {
@@ -191,7 +192,8 @@ export class ShellComponent {
 
       const add: qPCRFile = {fileInfo, counts, columns, data} as qPCRFile
 
-      this.#store.dispatch(addFile({file: add}))
+      this.#store.dispatch(new AddQPCRFile(add))
+
 
       this.qpcrFiles.update(val => {
         val.push(add)

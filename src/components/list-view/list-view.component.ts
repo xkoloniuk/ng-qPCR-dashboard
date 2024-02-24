@@ -1,12 +1,12 @@
-import {ChangeDetectionStrategy, Component, inject, Input, OnInit} from '@angular/core';
-import {select, Store} from "@ngrx/store";
-import {selectFilesByTarget} from "../../app/store/app.selectors";
-import {Observable} from "rxjs";
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {AsyncPipe, DatePipe, NgForOf, NgIf} from "@angular/common";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {TableModule} from "primeng/table";
 import {TargetCardComponent} from "../target-card/target-card.component";
 import {qPCRFile} from "../../interfaces/interface";
+import {Store} from "@ngxs/store";
+import {GlobalState} from "../../app/store_xs/store.state";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-list-view',
@@ -26,7 +26,7 @@ import {qPCRFile} from "../../interfaces/interface";
 })
 export class ListViewComponent implements OnInit {
   public target?;
-  public tableData: qPCRFile[] = [];
+  public tableData$!: Observable<qPCRFile[]>;
 
   constructor(private store: Store, private route: ActivatedRoute) {
     this.target = this.route.snapshot.paramMap.get('targetName');
@@ -34,7 +34,7 @@ export class ListViewComponent implements OnInit {
 
   ngOnInit() {
     if (this.target) {
-      this.store.pipe(select(selectFilesByTarget(this.target))).subscribe(data => this.tableData = data)
+      this.tableData$ = this.store.select(GlobalState.selectFilesByTarget(this.target))
     }
   }
 

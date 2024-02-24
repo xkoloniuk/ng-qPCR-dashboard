@@ -1,6 +1,6 @@
 <div>{{ 'Plate files for ' + target }} </div>
 
-<p-table [value]="tableData" [tableStyle]="{ 'min-width': '50rem' }">
+<p-table [value]="(tableData$ | async) ?? []" [tableStyle]="{ 'min-width': '50rem' }">
   <ng-template pTemplate="header">
     <tr>
       <th>File Name</th>

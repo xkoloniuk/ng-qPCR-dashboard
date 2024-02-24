@@ -1,8 +1,7 @@
 import {Injectable} from "@angular/core";
-import {Selector, State} from "@ngxs/store";
-import {qPCRFile, qPCRrecord} from "../../interfaces/interface";
-import {createFeatureSelector, createSelector} from "@ngrx/store";
-import {AppState} from "../store/app.reducers";
+import {Action, Selector, State, StateContext} from "@ngxs/store";
+import {qPCRFile} from "../../interfaces/interface";
+import {AddQPCRFile, DeleteQPCRFile, DeleteQPCRFiles, ResetState} from "./store.actions";
 
 interface tMValidCriteria {
   targetName: string,
@@ -50,22 +49,22 @@ export class GlobalState {
   }
 
   @Selector()
-  static selectFileBySample(sample: string) {
+  static selectFilesBySample(sample: string) {
     return (state: GlobalStateModel) => {
       if (!state.qPCRfiles) {
         return [];
       }
-      return state.qPCRfiles.filter((file => file.data.some(row => row.Sample === sample)))
+      return state.qPCRfiles.filter((file => file.counts.uniqueSamples.some(uniqueSample => uniqueSample === sample)))
     };
   }
 
 @Selector()
-  static selectFileBySamples(samples: string[]) {
+  static selectFilesBySamples(enqueriedSamples: string[]) {
     return (state: GlobalStateModel) => {
       if (!state.qPCRfiles) {
         return [];
       }
-      return state.qPCRfiles.filter((file => file.data.some(row =>  samples.some( sample => sample === row.Sample))))
+      return state.qPCRfiles.filter((file => file.counts.uniqueSamples.some(uniqueSample =>  enqueriedSamples.some( enqueriedSample => enqueriedSample === uniqueSample))))
     };
   }
 
@@ -73,9 +72,9 @@ export class GlobalState {
   static selectFileByFileName(fileName: string) {
     return (state: GlobalStateModel) => {
       if (!state.qPCRfiles) {
-        return [];
+        return undefined;
       }
-      return state.qPCRfiles.filter((file => file.fileInfo["File Name"] === fileName));
+      return state.qPCRfiles.find((file => file.fileInfo["File Name"] === fileName));
     };
   }
 
@@ -85,37 +84,66 @@ export class GlobalState {
       if (!state.qPCRfiles) {
         return [];
       }
-      return state.qPCRfiles.filter((file => file.data.some((row: qPCRrecord) => row.Target === target))
+      return state.qPCRfiles.filter((file => file.counts.uniqueTargets.some(uniqueTarget => uniqueTarget === target))
       );
     };
   }
 
+  @Selector()
+  static selectFilesByTargets(enqueriedTargets: string[]) {
+    return (state: GlobalStateModel) => {
+      if (!state.qPCRfiles) {
+        return [];
+      }
+      return state.qPCRfiles.filter((file => file.counts.uniqueSamples.some(uniqueTarget =>  enqueriedTargets.some( enqueriedTarget => enqueriedTarget === uniqueTarget))))
+    };
+  }
+
+  @Action(AddQPCRFile)
+  addQPCRFile(ctx: StateContext<GlobalStateModel>, action: AddQPCRFile) {
+    const state = ctx.getState();
+    const qPCRFiles = state.qPCRfiles ? [...state.qPCRfiles] : [];
+
+    qPCRFiles.push(action.file);
+
+    ctx.patchState({
+      qPCRfiles: qPCRFiles
+    });
+  }
+
+
+  @Action(DeleteQPCRFile)
+  deleteQPCRFile(ctx: StateContext<GlobalStateModel>, action: DeleteQPCRFile) {
+    const state = ctx.getState();
+    const qPCRFiles = state.qPCRfiles ? [...state.qPCRfiles] : [];
+    qPCRFiles.filter(file => file.fileInfo["File Name"] !== action.fileName);
+
+    ctx.patchState({
+      qPCRfiles: qPCRFiles
+    });
+  }
+
+  @Action(DeleteQPCRFiles)
+  deleteQPCRFiles(ctx: StateContext<GlobalStateModel>, action: DeleteQPCRFiles) {
+    const state = ctx.getState();
+    const qPCRFiles = state.qPCRfiles ? [...state.qPCRfiles] : [];
+    action.fileNames.some(fileToDelete => qPCRFiles.filter(file => fileToDelete !== file.fileInfo["File Name"]));
+
+    ctx.patchState({
+      qPCRfiles: qPCRFiles
+    });
+  }
+
+  @Action(ResetState)
+  resetState(ctx: StateContext<GlobalStateModel>) {
+    ctx.setState({
+      qPCRfiles: [],
+      targets: new Set<string>(),
+      samples: new Set<string>(),
+      tMValidation: []
+    });
+  }
+
+
+
 }
-
-
-export const selectAppState = createFeatureSelector<AppState>('app');
-
-export const selectFiles = createSelector(
-  selectAppState,
-  (state: AppState) => state.files
-);
-export const selectFilesByTarget = (target: string) => createSelector(
-  selectFiles,
-  (allFiles) => allFiles.filter((file) => {
-    return file.data.some((wellData: qPCRrecord) => wellData.Target === target)
-  })
-);
-export const selectFilesBySample = (sample: string) => createSelector(
-  selectFiles,
-  (allFiles) => allFiles.filter((file) => {
-    return file.data.some((wellData: qPCRrecord) => wellData.Sample === sample)
-  })
-);
-export const selectFileByFileName = (fileName: string) => createSelector(
-  selectFiles,
-  (allFiles) => allFiles.find((file) => file.fileInfo["File Name"] === fileName)
-);
-
-export const selectSamplesNames = () => createSelector(
-  selectFiles,
-  (allFiles) => allFiles.flatMap(file => file.counts.uniqueSamples).flat());

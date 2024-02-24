@@ -1,15 +1,9 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {qPCRFile, qPCRrecord} from "../../interfaces/interface";
-import {select, Store} from "@ngrx/store";
+import {qPCRFile} from "../../interfaces/interface";
 import {ActivatedRoute} from "@angular/router";
-import {
-  selectFiles,
-  selectFilesBySample,
-  selectFilesByTarget,
-  selectSamplesNames
-} from "../../app/store/app.selectors";
 import {NgForOf} from "@angular/common";
-import {logMessages} from "@angular-devkit/build-angular/src/tools/esbuild/utils";
+import {Store} from "@ngxs/store";
+import {GlobalState} from "../../app/store_xs/store.state";
 
 @Component({
   selector: 'app-samples-view',
@@ -32,16 +26,15 @@ export class SamplesViewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.pipe(select(selectSamplesNames)).subscribe(samples => {
-    if(samples.length) {
-
-    }
-
+    this.store.select(GlobalState.selectSamplesNames).subscribe(samples => {
+    // if(samples.length) {
+    // }
     } )
   }
 
 
   getPlatesCount(sample: string) {
-    return this.store.pipe(select(selectFilesBySample(sample))).subscribe(data => data.length);
+    // return this.store.pipe(select(selectFilesBySample(sample))).subscribe(data => data.length);
+    return this.store.select(GlobalState.selectFilesBySample(sample)).subscribe(data => data.length);
   }
 }
