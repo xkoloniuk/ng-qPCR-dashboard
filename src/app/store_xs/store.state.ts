@@ -1,41 +1,54 @@
-import {Injectable} from "@angular/core";
-import {Action, Selector, State, StateContext} from "@ngxs/store";
-import {qPCRFile} from "../../interfaces/interface";
-import {AddQPCRFile, DeleteQPCRFile, DeleteQPCRFiles, ResetState} from "./store.actions";
+import { Injectable } from '@angular/core';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { qPCRFile } from '../../interfaces/interface';
+import {
+  AddQPCRFile,
+  DeleteQPCRFile,
+  DeleteQPCRFiles,
+  ResetState,
+} from './store.actions';
 
 interface tMValidCriteria {
-  targetName: string,
-  minAcceptedTm: number,
-  maxAcceptedTm: number
+  targetName: string;
+  minAcceptedTm: number;
+  maxAcceptedTm: number;
 }
 
 interface GlobalStateModel {
-  qPCRfiles?: qPCRFile[],
-  targets?: Set<string>,
-  samples?: Set<string>,
-  tMValidation?: tMValidCriteria[],
+  qPCRfiles: qPCRFile[];
+  targets: Array<string>;
+  samples: Array<string>;
+  tMValidation?: tMValidCriteria[];
 }
 
 @State<GlobalStateModel>({
   name: 'global',
   defaults: {
-    qPCRfiles: undefined,
-    targets: undefined,
-    samples: undefined,
+    qPCRfiles: [] as qPCRFile[],
+    targets: [],
+    samples: [],
     tMValidation: undefined,
-  }
+  },
 })
 @Injectable()
 export class GlobalState {
-
   @Selector()
-  static selectTargetsNames(state: GlobalStateModel): Set<string> {
-    return state?.targets ?? new Set();
+  static selectTargetsNames(state: GlobalStateModel): string[] {
+    if (!state.targets) {
+      return [];
+    }
+    return Array.from(state.targets);
   }
 
   @Selector()
-  static selectSamplesNames(state: GlobalStateModel): Set<string> {
-    return state?.samples ?? new Set();
+  static selectSamplesNames(state: GlobalStateModel): string[] {
+    if (!state.samples) {
+      return [];
+    }
+    console.log(Array.from(state.samples));
+    console.log(state);
+    console.log(state.samples);
+    return Array.from(state.samples);
   }
 
   @Selector()
@@ -44,48 +57,91 @@ export class GlobalState {
   }
 
   @Selector()
-  static getTmValidations(state: GlobalStateModel): tMValidCriteria[] {
-    return state?.tMValidation ?? [];
+  static getTmValidations(state: {
+    global: GlobalStateModel;
+  }): tMValidCriteria[] {
+    return state?.global.tMValidation ?? [];
   }
 
   @Selector()
   static selectFilesBySample(sample: string) {
-    return (state: GlobalStateModel) => {
-      if (!state.qPCRfiles) {
+    return (state: { global: GlobalStateModel }) => {
+      if (!state.global.qPCRfiles) {
         return [];
       }
-      return state.qPCRfiles.filter((file => file.counts.uniqueSamples.some(uniqueSample => uniqueSample === sample)))
+      return state.global.qPCRfiles.filter((file) =>
+        file.counts.uniqueSamples.some(
+          (uniqueSample) => uniqueSample === sample,
+        ),
+      );
     };
   }
 
-@Selector()
+  @Selector()
   static selectFilesBySamples(enqueriedSamples: string[]) {
-    return (state: GlobalStateModel) => {
-      if (!state.qPCRfiles) {
+    return (state: { global: GlobalStateModel }) => {
+      if (!state.global.qPCRfiles) {
         return [];
       }
-      return state.qPCRfiles.filter((file => file.counts.uniqueSamples.some(uniqueSample =>  enqueriedSamples.some( enqueriedSample => enqueriedSample === uniqueSample))))
+      return state.global.qPCRfiles.filter((file) =>
+        file.counts.uniqueSamples.some((uniqueSample) =>
+          enqueriedSamples.some(
+            (enqueriedSample) => enqueriedSample === uniqueSample,
+          ),
+        ),
+      );
     };
   }
 
   @Selector()
   static selectFileByFileName(fileName: string) {
-    return (state: GlobalStateModel) => {
-      if (!state.qPCRfiles) {
+    return (state: { global: GlobalStateModel }) => {
+      if (!state.global.qPCRfiles) {
         return undefined;
       }
-      return state.qPCRfiles.find((file => file.fileInfo["File Name"] === fileName));
+      return state.global.qPCRfiles.find(
+        (file) => file.fileInfo['File Name'] === fileName,
+      );
     };
   }
 
+  // @Selector()
+  // static selectFilesByTarget(target: string) {
+  //   return (state: GlobalStateModel): qPCRFile[] => {
+  //     if (!state.qPCRfiles) {
+  //       console.log('FIRST CASE');
+  //       return [];
+  //     }
+  //     return state.qPCRfiles.filter((file) =>
+  //       file.counts.uniqueTargets.some((uniqueTarget) => {
+  //         console.log('SECOND CASE');
+  //         return uniqueTarget === target;
+  //       }),
+  //     );
+  //   };
+  // }
+
   @Selector()
   static selectFilesByTarget(target: string) {
-    return (state: GlobalStateModel) => {
-      if (!state.qPCRfiles) {
+    return (state: { global: GlobalStateModel }): qPCRFile[] => {
+      if (!state.global.qPCRfiles) {
         return [];
       }
-      return state.qPCRfiles.filter((file => file.counts.uniqueTargets.some(uniqueTarget => uniqueTarget === target))
-      );
+      const filteredFiles = state.global.qPCRfiles.filter((file) => {
+        if (!file.counts.uniqueTargets) {
+          return false;
+        }
+
+        const hasMatchingTarget = file.counts.uniqueTargets.some(
+          (uniqueTarget) => {
+            return uniqueTarget === target;
+          },
+        );
+
+        return hasMatchingTarget;
+      });
+
+      return filteredFiles;
     };
   }
 
@@ -95,7 +151,13 @@ export class GlobalState {
       if (!state.qPCRfiles) {
         return [];
       }
-      return state.qPCRfiles.filter((file => file.counts.uniqueSamples.some(uniqueTarget =>  enqueriedTargets.some( enqueriedTarget => enqueriedTarget === uniqueTarget))))
+      return state.qPCRfiles.filter((file) =>
+        file.counts.uniqueSamples.some((uniqueTarget) =>
+          enqueriedTargets.some(
+            (enqueriedTarget) => enqueriedTarget === uniqueTarget,
+          ),
+        ),
+      );
     };
   }
 
@@ -104,33 +166,53 @@ export class GlobalState {
     const state = ctx.getState();
     const qPCRFiles = state.qPCRfiles ? [...state.qPCRfiles] : [];
 
+    const targets = state.targets
+      ? new Set([...state.targets])
+      : new Set<string>();
+    action.file.counts.uniqueTargets.forEach((newTarget) =>
+      targets.add(newTarget),
+    );
+
+    const samples = state.samples
+      ? new Set([...state.samples])
+      : new Set<string>();
+    action.file.counts.uniqueSamples.forEach((newSample) =>
+      samples.add(newSample),
+    );
+
     qPCRFiles.push(action.file);
 
     ctx.patchState({
-      qPCRfiles: qPCRFiles
+      qPCRfiles: qPCRFiles,
+      targets: Array.from(targets),
+      samples: Array.from(samples),
     });
   }
-
 
   @Action(DeleteQPCRFile)
   deleteQPCRFile(ctx: StateContext<GlobalStateModel>, action: DeleteQPCRFile) {
     const state = ctx.getState();
     const qPCRFiles = state.qPCRfiles ? [...state.qPCRfiles] : [];
-    qPCRFiles.filter(file => file.fileInfo["File Name"] !== action.fileName);
 
     ctx.patchState({
-      qPCRfiles: qPCRFiles
+      qPCRfiles: qPCRFiles.filter(
+        (file) => file.fileInfo['File Name'] !== action.fileName,
+      ),
     });
   }
 
   @Action(DeleteQPCRFiles)
-  deleteQPCRFiles(ctx: StateContext<GlobalStateModel>, action: DeleteQPCRFiles) {
+  deleteQPCRFiles(
+    ctx: StateContext<GlobalStateModel>,
+    action: DeleteQPCRFiles,
+  ) {
     const state = ctx.getState();
     const qPCRFiles = state.qPCRfiles ? [...state.qPCRfiles] : [];
-    action.fileNames.some(fileToDelete => qPCRFiles.filter(file => fileToDelete !== file.fileInfo["File Name"]));
 
     ctx.patchState({
-      qPCRfiles: qPCRFiles
+      qPCRfiles: qPCRFiles.filter(
+        (file) => !action.fileNames.includes(file.fileInfo['File Name']),
+      ),
     });
   }
 
@@ -138,12 +220,9 @@ export class GlobalState {
   resetState(ctx: StateContext<GlobalStateModel>) {
     ctx.setState({
       qPCRfiles: [],
-      targets: new Set<string>(),
-      samples: new Set<string>(),
-      tMValidation: []
+      targets: [],
+      samples: [],
+      tMValidation: [],
     });
   }
-
-
-
 }

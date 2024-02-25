@@ -1,42 +1,44 @@
-import {ChangeDetectionStrategy, Component, computed, inject, Signal, signal, WritableSignal} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FileUploadModule} from 'primeng/fileupload';
-import {TargetCardComponent} from "../../components/target-card/target-card.component";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+  signal,
+  WritableSignal,
+} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FileUploadModule } from 'primeng/fileupload';
+import { TargetCardComponent } from '../../components/target-card/target-card.component';
 
-
-import {RouterLink, RouterOutlet} from "@angular/router";
-import {qPCRFile, qPCRFileInfo, qPCRrecord} from "../../interfaces/interface";
-import {Store} from "@ngxs/store";
-import {AddQPCRFile, ResetState} from "../../app/store_xs/store.actions";
+import { RouterLink, RouterOutlet } from '@angular/router';
+import { qPCRFile, qPCRFileInfo, qPCRrecord } from '../../interfaces/interface';
+import { Store } from '@ngxs/store';
+import { AddQPCRFile, ResetState } from '../../app/store_xs/store.actions';
+import { Observable } from 'rxjs';
+import { GlobalState } from '../../app/store_xs/store.state';
 
 @Component({
   selector: 'ng-q-dashboard-shell',
   standalone: true,
-  imports: [CommonModule, FileUploadModule, TargetCardComponent, RouterLink, RouterOutlet],
+  imports: [
+    CommonModule,
+    FileUploadModule,
+    TargetCardComponent,
+    RouterLink,
+    RouterOutlet,
+  ],
   templateUrl: './shell.component.html',
   styleUrls: ['./shell.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ShellComponent {
-
+export class ShellComponent implements OnInit {
   #store = inject(Store);
 
   public selectedFiles: WritableSignal<Array<NamedFile>> = signal([]);
-  public qpcrFiles: WritableSignal<Array<qPCRFile>> = signal([]);
+  public qpcrFiles$!: Observable<qPCRFile[]>;
+  public samples$!: Observable<string[]>;
+  public targets$!: Observable<string[]>;
   private showProgressBar?: boolean;
-
-  public targets: Signal<string[]> = computed(() => {
-    let targets: Array<string> = []
-    this.qpcrFiles().forEach(f => targets.push(...f.counts.uniqueTargets))
-    return Array.from(new Set(targets))
-  });
-
-  public samples: Signal<string[]> = computed(() => {
-    let targets: Array<string> = []
-    this.qpcrFiles().forEach(f => targets.push(...f.counts.uniqueSamples))
-    return Array.from(new Set(targets))
-  });
-
 
   // qPCRfile: qPCdata = {
   //   data: [],
@@ -58,12 +60,17 @@ export class ShellComponent {
   //   // }
   // }
 
- public async customHandler(files: File[]) {
-    this.showProgressBar = true;
-    console.log('customHandler CALLED')
+  public ngOnInit() {
+    this.qpcrFiles$ = this.#store.select(GlobalState.selectFiles);
+    this.samples$ = this.#store.select(GlobalState.selectSamplesNames);
+    this.targets$ = this.#store.select(GlobalState.selectTargetsNames);
+  }
 
-    this.#store.dispatch(new ResetState())
-    this.qpcrFiles.set([])
+  public customHandler(files: File[]) {
+    this.showProgressBar = true;
+    console.log('customHandler CALLED');
+
+    this.#store.dispatch(new ResetState());
 
     files.forEach((file: File) => {
       this.processCsvFile(file);
@@ -76,13 +83,13 @@ export class ShellComponent {
     file.text().then((csv) => {
       // console.log(csv)
 
-      const csvLines = csv.split('\n')
+      const csvLines = csv.split('\n');
 
       let fileInfo: qPCRFileInfo = {
         'File Name': '',
         'Created By User': '',
-        'Notes': '',
-        'ID': '',
+        Notes: '',
+        ID: '',
         'Run Started': '',
         'Run Ended': '',
         'Sample Vol': '',
@@ -94,18 +101,18 @@ export class ShellComponent {
         'CFX Maestro Version': '',
         'Well group': '',
         'Amplification step': '',
-        'Melt step': ''
+        'Melt step': '',
       };
 
-      let columns: string[] = []
-      let data: Array<qPCRrecord> = []
+      let columns: string[] = [];
+      let data: Array<qPCRrecord> = [];
 
       csvLines.forEach((csvLine, index) => {
         // split line from CSV file into array
-        const csValuesArr = csvLine.split(',')
+        const csValuesArr = csvLine.split(',');
         // check for null
         if (!csValuesArr[0]) {
-          return
+          return;
         }
 
         const fileInfoKeys = [
@@ -124,34 +131,34 @@ export class ShellComponent {
           'CFX Maestro Version',
           'Well group',
           'Amplification step',
-          'Melt step'
-        ]
+          'Melt step',
+        ];
 
         // if the first value represents one of info keys, then process it accordingly
         if (csValuesArr[0] && fileInfoKeys.includes(csValuesArr[0])) {
-
           // convert value for date key into Date format
-          if (csValuesArr[0] === 'Run Started' || csValuesArr[0] === 'Run Ended') {
-            const dateValue = new Date(Date.parse(csValuesArr[1]))
+          if (
+            csValuesArr[0] === 'Run Started' ||
+            csValuesArr[0] === 'Run Ended'
+          ) {
+            const dateValue = new Date(Date.parse(csValuesArr[1]));
             // @ts-ignore
-            fileInfo[csValuesArr[0]] = dateValue
-            return
+            fileInfo[csValuesArr[0]] = dateValue;
+            return;
           }
           //  remaining assign as they are
           // @ts-ignore
-          fileInfo[csValuesArr[0]] = csValuesArr[1]
-          return
+          fileInfo[csValuesArr[0]] = csValuesArr[1];
+          return;
         }
 
         // catch line that represents columns to get actual column names
         if (csValuesArr[0] && csValuesArr[0] === 'Well') {
-          columns = csValuesArr
-          return
+          columns = csValuesArr;
+          return;
         }
 
-
         // remaining lines should be well data, one well per a line
-
 
         // Transform data and names into an array of objects
 
@@ -175,48 +182,41 @@ export class ShellComponent {
           'End Temperature': '',
           Call: '',
           'End RFU': '',
-        }
-
+        };
 
         csValuesArr.forEach((value, index) => {
           const key = columns[index];
           // @ts-ignore
-          obj[key] = value
+          obj[key] = value;
         });
 
-        data.push(obj)
-      })
+        data.push(obj);
+      });
 
+      const counts = this.generateReport({ columns, data });
 
-      const counts = this.generateReport({columns, data})
+      const fileToAdd: qPCRFile = {
+        fileInfo,
+        counts,
+        columns,
+        data,
+      } as qPCRFile;
 
-      const fileToAdd: qPCRFile = {fileInfo, counts, columns, data} as qPCRFile
-
-      this.#store.dispatch(new AddQPCRFile(fileToAdd))
-
-
-      this.qpcrFiles.update(val => {
-        val.push(fileToAdd)
-        return val
-      })
+      this.#store.dispatch(new AddQPCRFile(fileToAdd));
     });
   }
 
-
   private generateReport(inputData: Partial<qPCRFile>) {
-    console.log(inputData.columns)
-    console.log(inputData.data)
+    console.log('generate report');
+    const samples = inputData?.data?.map((wellData) => wellData.Sample);
+    const targets = inputData?.data?.map((wellData) => wellData.Target);
 
-    const samples = inputData?.data?.map(wellData => wellData.Sample);
-    const targets = inputData?.data?.map(wellData => wellData.Target);
+    const uniqueSamples = Array.from(new Set(samples));
+    const uniqueTargets = Array.from(new Set(targets));
 
-    const uniqueSamples = Array.from(new Set(samples))
-    const uniqueTargets = Array.from(new Set(targets))
-
-    return {uniqueSamples, uniqueTargets}
+    return { uniqueSamples, uniqueTargets };
   }
 }
-
 
 // interface qPcrRun {
 //   fileInfo: qPcrFileInfo,
@@ -227,14 +227,7 @@ export class ShellComponent {
 // [key in typeof qPCRFileInfoKeys[number]]: string
 // }
 
-
-
-
-
-
 interface NamedFile {
   key: string;
-  file: File
+  file: File;
 }
-
-
