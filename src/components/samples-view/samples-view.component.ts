@@ -1,9 +1,14 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {qPCRFile} from "../../interfaces/interface";
-import {ActivatedRoute} from "@angular/router";
-import {NgForOf} from "@angular/common";
-import {Store} from "@ngxs/store";
-import {GlobalState} from "../../app/store_xs/store.state";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
+import { AsyncPipe, NgForOf } from '@angular/common';
+import { Store } from '@ngxs/store';
+import { GlobalState } from '../../app/store_xs/store.state';
+import { Observable } from 'rxjs';
+import { ChipModule } from 'primeng/chip';
 
 @Component({
   selector: 'app-samples-view',
@@ -11,30 +16,18 @@ import {GlobalState} from "../../app/store_xs/store.state";
   styleUrls: ['./samples-view.component.sass'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    NgForOf
-  ]
+  imports: [NgForOf, AsyncPipe, ChipModule],
 })
 export class SamplesViewComponent implements OnInit {
-  public samples = new Set<string>();
-  public tableData: qPCRFile[] = [];
-  public countsPerSample?: {sample: string, count: number}[] = [];
-
-
-  constructor(private store: Store, private route: ActivatedRoute) {
-
-  }
+  public samples$!: Observable<string[]>;
+  #store = inject(Store);
 
   ngOnInit() {
-    this.store.select(GlobalState.selectSamplesNames).subscribe(samples => {
-    // if(samples.length) {
-    // }
-    } )
+    this.samples$ = this.#store.select(GlobalState.selectSamplesNames);
   }
 
-
-  getPlatesCount(sample: string) {
-    // return this.store.pipe(select(selectFilesBySample(sample))).subscribe(data => data.length);
-    return this.store.select(GlobalState.selectFilesBySample(sample)).subscribe(data => data.length);
-  }
+  // getPlatesCount(sample: string) {
+  //   // return this.store.pipe(select(selectFilesBySample(sample))).subscribe(data => data.length);
+  //   return this.store.select(GlobalState.selectFilesBySample(sample)).subscribe(data => data.length);
+  // }
 }
