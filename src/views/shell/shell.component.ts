@@ -58,7 +58,7 @@ export class ShellComponent {
   //   // }
   // }
 
-  async customHandler(files: File[]) {
+ public async customHandler(files: File[]) {
     this.showProgressBar = true;
     console.log('customHandler CALLED')
 
@@ -127,7 +127,7 @@ export class ShellComponent {
           'Melt step'
         ]
 
-        // if the first value represents one of info keys, then process it properly
+        // if the first value represents one of info keys, then process it accordingly
         if (csValuesArr[0] && fileInfoKeys.includes(csValuesArr[0])) {
 
           // convert value for date key into Date format
@@ -190,20 +190,20 @@ export class ShellComponent {
 
       const counts = this.generateReport({columns, data})
 
-      const add: qPCRFile = {fileInfo, counts, columns, data} as qPCRFile
+      const fileToAdd: qPCRFile = {fileInfo, counts, columns, data} as qPCRFile
 
-      this.#store.dispatch(new AddQPCRFile(add))
+      this.#store.dispatch(new AddQPCRFile(fileToAdd))
 
 
       this.qpcrFiles.update(val => {
-        val.push(add)
+        val.push(fileToAdd)
         return val
       })
     });
   }
 
 
-  generateReport(inputData: Partial<qPCRFile>) {
+  private generateReport(inputData: Partial<qPCRFile>) {
     console.log(inputData.columns)
     console.log(inputData.data)
 
