@@ -1,4 +1,4 @@
-<div>{{ 'Plate files for ' + target }} </div>
+<div class="text-indigo-700 font-bold text-xl py-3">{{ 'Plate files for ' + target }} </div>
 
 <p-table [value]="tableData" [tableStyle]="{ 'min-width': '50rem' }">
   <ng-template pTemplate="header">
@@ -10,6 +10,7 @@
   </ng-template>
   <ng-template pTemplate="body" let-file>
     <tr [routerLink]="['/run', file.fileInfo['File Name']]"
+        class="cursor-pointer "
     >
       <td>{{ file.fileInfo['File Name'] }}</td>
       <td>{{ file.fileInfo['Run Started'] | date}} </td>
