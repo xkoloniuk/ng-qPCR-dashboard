@@ -29,4 +29,6 @@ export const selectFileByFileName = (fileName: string) => createSelector(
 
 export const selectSamplesNames = () => createSelector(
   selectFiles,
-  (allFiles) => allFiles.flatMap(file => file.counts.uniqueSamples).flat());
+  (allFiles) => {
+    allFiles.map(file => file.counts.uniqueSamples)
+  });

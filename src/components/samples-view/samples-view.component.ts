@@ -28,20 +28,21 @@ export class SamplesViewComponent implements OnInit {
 
 
   constructor(private store: Store, private route: ActivatedRoute) {
-
   }
 
   ngOnInit() {
-    this.store.pipe(select(selectSamplesNames)).subscribe(samples => {
-    if(samples.length) {
+    this.store.pipe(select(selectFiles)).subscribe(samples => {
+      samples.forEach(sample => sample.counts.uniqueSamples.forEach(this.samples.add, this.samples))
 
-    }
-
+      this.samples.forEach(sample => this.getPlatesCount(sample) )
     } )
+
+
+
   }
 
 
   getPlatesCount(sample: string) {
-    return this.store.pipe(select(selectFilesBySample(sample))).subscribe(data => data.length);
+    return this.store.pipe(select(selectFilesBySample(sample)));
   }
 }
