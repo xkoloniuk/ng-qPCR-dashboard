@@ -1,12 +1,12 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs";
-import {select, Store} from "@ngrx/store";
 import {ActivatedRoute} from "@angular/router";
-import {selectFileByFileName,} from "../../app/store/app.selectors";
 import {TableModule} from "primeng/table";
 import {MultiSelectModule} from "primeng/multiselect";
 import {FormsModule} from "@angular/forms";
 import {qPCRFile, qPCRrecord} from "../../interfaces/interface";
+import {Store} from "@ngxs/store";
+import {GlobalState} from "../../app/store_xs/store.state";
 
 
 @Component({
@@ -38,9 +38,9 @@ export class RunViewComponent implements OnInit {
   ngOnInit() {
     if (this.fileName) {
 
-      this.store.pipe(select(selectFileByFileName(this.fileName))).subscribe(data => {
+      this.store.select(GlobalState.selectFileByFileName(this.fileName)).subscribe(data => {
     console.log(this.tableData)
-        if (data?.data !== undefined) {
+        if (data !== undefined) {
           // console.log(data)
           this.tableData = [...data.data]
         }

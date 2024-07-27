@@ -14,20 +14,19 @@
     </div>
 
 
-    <div class="text-xs font-italic text-gray-800 align-self-start pl-3">
-      <div class="flex align-items-center gap-2" *ngIf="plates$ | async as plates">
-        <span class="w-2rem text-right" >{{plates?.length + ' '}}</span>
-        <span>{{plates.length > 1 ? 'plates' : 'plate'}}</span>
+    <div class="text-xs font-italic text-gray-800 align-self-start pl-3" *ngIf="platesByTarget$ | async as platesByTarget">
+      <div class="flex align-items-center gap-2" >
+        <span class="w-2rem text-right" >{{platesByTarget?.length + ' '}}</span>
+        <span>{{platesByTarget.length > 1 ? 'plates' : 'plate'}}</span>
       </div>
       <div class="flex align-items-center gap-2" >
-        <span class="w-2rem text-right" >{{reactions + ' '}}</span>
+        <span class="w-2rem text-right" >{{'reactions...' + ' '}}</span>
 
-        <span>{{reactions > 1 ? 'reactions' : 'reaction'}}</span>
       </div>
       <div class="flex align-items-center gap-2" >
-        <span class="w-2rem text-right" >{{samples + ' '}}</span>
+<!--        <span class="w-2rem text-right" >{{platesByTarget?.counts.uniqueSamples.length + ' '}}</span>-->
 
-        <span>{{samples > 1 ? 'samples' : 'sample'}}</span>
+<!--        <span>{{platesByTarget?.counts.uniqueSamples.length > 1 ? 'samples' : 'sample'}}</span>-->
       </div>
     </div>
 

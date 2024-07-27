@@ -1,5 +1,9 @@
-<div class="header">
-  <div class="start">
+<div class="header" *ngIf="qpcrFiles$ | async as qPCRFiles">
+  <div class="start py-6 pl-8"
+       *ngIf="!qPCRFiles.length"
+
+  >
+
     <p-fileUpload
       mode="basic"
       accept=".csv"
@@ -7,32 +11,39 @@
       [customUpload]="true"
       (uploadHandler)="customHandler($event.files)"
       [auto]="true" chooseLabel="Add qPCR csv files">
+
     </p-fileUpload>
 
   </div>
-  <div class="page-container w-100">
+  <div class="page-container w-100 pl-8 pt-8"
+       *ngIf="qPCRFiles.length"
 
-    <div class="p-6">
-      {{qpcrFiles().length + ' files were added'}}
+  >
+
+    <div class="p-1">
+      {{ qPCRFiles.length + ' files were added' }}
+
+    </div>
+    <div class="p-1" *ngIf="samples$ | async as samples">
+      {{ samples.length + ' samples were found' }}
+    </div>
+
+
+    <div class="p-1" *ngIf="targets$ | async as targets">
+      {{ targets.length + ' targets were found' }}
 
     </div>
 
-    <div class="p-6">
-      {{targets().length + ' targets were found'}}
+    <div class="flex flex-wrap gap-2 py-4">
 
-      <div class="flex flex-wrap gap-2 py-4">
+      <ng-container *ngFor="let target of targets$ | async">
 
-        <ng-container *ngFor="let target of targets()">
-
-          <app-target-card
-            [routerLink]="['/target', target]"
-            [target]="target"></app-target-card>
-        </ng-container>
-      </div>
+        <app-target-card
+          [routerLink]="['/target', target]"
+          [target]="target"></app-target-card>
+      </ng-container>
     </div>
-    <div class="p-6">
-      {{samples().length + ' samples were found'}}
-    </div>
+
 
   </div>
 </div>

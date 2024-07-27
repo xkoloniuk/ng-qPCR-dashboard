@@ -1,4 +1,5 @@
-<p>samples-view works!</p>
-<ul *ngFor="let sample of countsPerSample">
-  <li>{{sample.sample + ' : ' + getPlatesCount(sample.sample) + ' plates'}}</li>
-</ul>
+  <h2>Samples</h2>
+<div >
+    <p-chip *ngFor="let sample of samples$ | async" [label]="sample" class="p-1"></p-chip>
+</div>
+

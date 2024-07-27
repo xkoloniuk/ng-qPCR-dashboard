@@ -1,14 +1,12 @@
 import {inject, NgModule} from '@angular/core';
 import {ActivatedRouteSnapshot, Router, RouterModule, RouterStateSnapshot, Routes} from '@angular/router';
-import {AppComponent} from "./app.component";
 import {ListViewComponent} from "../components/list-view/list-view.component";
 import {ShellComponent} from "../views/shell/shell.component";
-import {select, Store} from "@ngrx/store";
-import {selectFilesByTarget} from "./store/app.selectors";
-import {map, take} from "rxjs";
 import {RunViewComponent} from "../components/run-view/run-view.component";
 import {SampleCardComponent} from "../components/sample-card/sample-card.component";
 import {SamplesViewComponent} from "../components/samples-view/samples-view.component";
+import {Store} from "@ngxs/store";
+import {GlobalState} from "./store_xs/store.state";
 
 function targetExists(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
@@ -33,15 +31,7 @@ const router = inject(Router)
     const store = inject(Store)
     console.log(targetName)
     if (targetName) {
-     return  store.pipe(select(selectFilesByTarget(targetName)), take(1), map(data => {
-       console.log(data)
-       console.log(store)
-       if (data) {
-         return true
-       } else {
-         return false
-       }
-     }))
+     return  store.selectSnapshot(GlobalState.selectFilesByTarget(targetName))
     }
     return false
   }
