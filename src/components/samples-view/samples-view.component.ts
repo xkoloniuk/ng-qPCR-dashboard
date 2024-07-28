@@ -1,15 +1,13 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {qPCRFile, qPCRrecord} from "../../interfaces/interface";
-import {select, Store} from "@ngrx/store";
-import {ActivatedRoute} from "@angular/router";
-import {
-  selectFiles,
-  selectFilesBySample,
-  selectFilesByTarget,
-  selectSamplesNames
-} from "../../app/store/app.selectors";
-import {NgForOf} from "@angular/common";
-import {logMessages} from "@angular-devkit/build-angular/src/tools/esbuild/utils";
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { qPCRFile, qPCRrecord } from '../../interfaces/interface';
+
+import { ActivatedRoute } from '@angular/router';
+
+import { AsyncPipe, NgForOf } from '@angular/common';
+import { logMessages } from '@angular-devkit/build-angular/src/tools/esbuild/utils';
+import { Store } from '@ngxs/store';
+import { ChipModule } from 'primeng/chip';
+import { GlobalState } from '../../app/store_xs/store.state';
 
 @Component({
   selector: 'app-samples-view',
@@ -17,32 +15,29 @@ import {logMessages} from "@angular-devkit/build-angular/src/tools/esbuild/utils
   styleUrls: ['./samples-view.component.sass'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    NgForOf
-  ]
+  imports: [NgForOf, ChipModule, AsyncPipe],
 })
 export class SamplesViewComponent implements OnInit {
   public samples = new Set<string>();
   public tableData: qPCRFile[] = [];
-  public countsPerSample?: {sample: string, count: number}[] = [];
+  public countsPerSample?: { sample: string; count: number }[] = [];
 
-
-  constructor(private store: Store, private route: ActivatedRoute) {
-  }
+  constructor(
+    private store: Store,
+    private route: ActivatedRoute,
+  ) {}
 
   ngOnInit() {
-    this.store.pipe(select(selectFiles)).subscribe(samples => {
-      samples.forEach(sample => sample.counts.uniqueSamples.forEach(this.samples.add, this.samples))
+    this.store.select(GlobalState.selectFiles).subscribe((files: any) => {
+      files.forEach((file: any) =>
+        file.counts.uniqueSamples.forEach(this.samples.add, this.samples),
+      );
 
-      this.samples.forEach(sample => this.getPlatesCount(sample) )
-    } )
-
-
-
+      this.samples.forEach((sample) => this.getPlatesCount(sample));
+    });
   }
 
-
   getPlatesCount(sample: string) {
-    return this.store.pipe(select(selectFilesBySample(sample)));
+    return this.store.select(GlobalState.selectFilesBySample(sample));
   }
 }
