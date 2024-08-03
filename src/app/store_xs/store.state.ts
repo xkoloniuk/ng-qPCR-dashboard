@@ -167,9 +167,11 @@ export class GlobalState {
     const targets = state.targets
       ? new Set([...state.targets])
       : new Set<string>();
-    action.file.counts.uniqueTargets.forEach((newTarget) =>
-      targets.add(newTarget),
-    );
+    action.file.counts.uniqueTargets.forEach((newTarget) => {
+      if (newTarget !== '') {
+        targets.add(newTarget);
+      }
+    });
 
     const samples = state.samples
       ? new Set([...state.samples])
