@@ -78,16 +78,14 @@ export class GlobalState {
   }
 
   @Selector()
-  static selectFilesBySamples(enqueriedSamples: string[]) {
+  static selectFilesBySamples(samplesQuery: string[]) {
     return (state: { global: GlobalStateModel }) => {
       if (!state.global.qPCRfiles) {
         return [];
       }
       return state.global.qPCRfiles.filter((file) =>
         file.counts.uniqueSamples.some((uniqueSample) =>
-          enqueriedSamples.some(
-            (enqueriedSample) => enqueriedSample === uniqueSample,
-          ),
+          samplesQuery.some((sample) => sample === uniqueSample),
         ),
       );
     };
