@@ -1,7 +1,8 @@
-<div class="w-12rem h-7rem flex flex-column align-items-start justify-content-around border-2 border-primary-500 border-round p-2 gap-2 hover:shadow-3 hover:bg-blue-50 cursor-pointer">
+<div
+  class="w-12rem h-7rem flex flex-column align-items-start justify-content-around border-2 border-primary-500 border-round p-2 gap-2 hover:shadow-3 hover:bg-blue-50 cursor-pointer">
   <div class="flex flex-column align-items-start">
 
-    <span class="font-medium align-self-start">{{target}}</span>
+    <span class="font-medium align-self-start">{{ target }}</span>
     <span class="text-xs font-italic text-indigo-500 align-self-start">target</span>
   </div>
 
@@ -13,23 +14,24 @@
       <div class="border-1 border-primary-200 border-round p-1">Mt</div>
     </div>
 
+    @if (platesByTarget$ | async; as platesByTarget) {
+      <div class="text-xs font-italic text-gray-800 align-self-start pl-3">
+        <div class="flex align-items-center gap-2">
+          <span class="w-2rem text-right">{{ platesByTarget?.length + ' ' }}</span>
+          <span>{{ platesByTarget.length > 1 ? 'plates' : 'plate' }}</span>
+        </div>
+        <div class="flex align-items-center gap-2">
+          <span class="w-2rem text-right">{{ reactionsByTarget$ | async }}</span>
+          <span class="w-2rem text-right">{{ ' reactions' + ' ' }}</span>
 
-    <div class="text-xs font-italic text-gray-800 align-self-start pl-3" *ngIf="platesByTarget$ | async as platesByTarget">
-      <div class="flex align-items-center gap-2" >
-        <span class="w-2rem text-right" >{{platesByTarget?.length + ' '}}</span>
-        <span>{{platesByTarget.length > 1 ? 'plates' : 'plate'}}</span>
+        </div>
+        <div class="flex align-items-center gap-2">
+          <!--        <span class="w-2rem text-right" >{{platesByTarget?.counts.uniqueSamples.length + ' '}}</span>-->
+
+          <!--        <span>{{platesByTarget?.counts.uniqueSamples.length > 1 ? 'samples' : 'sample'}}</span>-->
+        </div>
       </div>
-      <div class="flex align-items-center gap-2" >
-        <span class="w-2rem text-right" >{{'reactions...' + ' '}}</span>
-
-      </div>
-      <div class="flex align-items-center gap-2" >
-<!--        <span class="w-2rem text-right" >{{platesByTarget?.counts.uniqueSamples.length + ' '}}</span>-->
-
-<!--        <span>{{platesByTarget?.counts.uniqueSamples.length > 1 ? 'samples' : 'sample'}}</span>-->
-      </div>
-    </div>
-
+    }
   </div>
 </div>
 
