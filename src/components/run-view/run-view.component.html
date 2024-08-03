@@ -1,19 +1,28 @@
-<div>{{ 'Plate files for ' + fileName }}</div>
+<div class="my-1">{{ 'Plate files for ' + fileName }}</div>
+
 <div class="container flex justify-content-center w-11 p-4">
 
-  <p-table [value]="tableData" styleClass="p-datatable-striped" [tableStyle]="{ 'min-width': '60rem' }">
+  <p-table [value]="tableData" styleClass="p-datatable-striped"
+           [tableStyle]="{ 'min-width': '60rem'}" [scrollable]="true"
+           scrollHeight="90vh"
+  >
     <ng-template pTemplate="header">
       <tr>
-        <th pSortableColumn="Well" >Well <p-columnFilter type="text" field="Well" display="menu"></p-columnFilter> <p-sortIcon field="Well"></p-sortIcon></th>
-        <th pSortableColumn="Target" >Target
-          <p-columnFilter field="Target" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+        <th pSortableColumn="Well">Well
+          <p-columnFilter type="text" field="Well" display="menu"></p-columnFilter>
+          <p-sortIcon field="Well"></p-sortIcon>
+        </th>
+        <th pSortableColumn="Target">Target
+          <p-columnFilter field="Target" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false"
+                          [showAddButton]="false">
             <ng-template pTemplate="header">
               <div class="px-3 pt-3 pb-0">
                 <span class="font-bold">Target Picker</span>
               </div>
             </ng-template>
             <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-              <p-multiSelect [ngModel]="value" [options]="targets" placeholder="Any" (onChange)="filter($event.value)" optionLabel="name">
+              <p-multiSelect [ngModel]="value" [options]="targets" placeholder="Any" (onChange)="filter($event.value)"
+                             optionLabel="name">
                 <ng-template let-option pTemplate="item">
                   <div class="inline-block vertical-align-middle">
                     <span class="ml-1 mt-1">{{ option }}</span>
@@ -22,12 +31,22 @@
               </p-multiSelect>
             </ng-template>
           </p-columnFilter>
-          <p-sortIcon field="Target"></p-sortIcon></th>
-        <th pSortableColumn="Content" >Sample Type <p-columnFilter type="text" field="Content" display="menu"></p-columnFilter> <p-sortIcon field="Content"></p-sortIcon></th>
-        <th pSortableColumn="Sample" >Sample <p-columnFilter type="text" field="Sample" display="menu"></p-columnFilter> <p-sortIcon field="Sample"></p-sortIcon></th>
-        <th pSortableColumn="Cq" >Cq <p-columnFilter type="number" field="Cq" display="menu"></p-columnFilter> <p-sortIcon field="Cq"></p-sortIcon></th>
-        <th >Melt temp </th>
-        <th >Melt peak </th>
+          <p-sortIcon field="Target"></p-sortIcon>
+        </th>
+        <th pSortableColumn="Content">Sample Type
+          <p-columnFilter type="text" field="Content" display="menu"></p-columnFilter>
+          <p-sortIcon field="Content"></p-sortIcon>
+        </th>
+        <th pSortableColumn="Sample">Sample
+          <p-columnFilter type="text" field="Sample" display="menu"></p-columnFilter>
+          <p-sortIcon field="Sample"></p-sortIcon>
+        </th>
+        <th pSortableColumn="Cq">Cq
+          <p-columnFilter type="number" field="Cq" display="menu"></p-columnFilter>
+          <p-sortIcon field="Cq"></p-sortIcon>
+        </th>
+        <th>Melt temp</th>
+        <th>Melt peak</th>
 
       </tr>
     </ng-template>

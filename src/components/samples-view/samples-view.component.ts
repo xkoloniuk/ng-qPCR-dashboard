@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { qPCRFile, qPCRrecord } from '../../interfaces/interface';
+import { qPCRFile } from '../../interfaces/interface';
 
 import { ActivatedRoute } from '@angular/router';
 
@@ -11,7 +11,7 @@ import { GlobalState } from '../../app/store_xs/store.state';
 @Component({
   selector: 'app-samples-view',
   templateUrl: './samples-view.component.html',
-  styleUrls: ['./samples-view.component.sass'],
+  styleUrls: ['./samples-view.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgForOf, ChipModule, AsyncPipe],

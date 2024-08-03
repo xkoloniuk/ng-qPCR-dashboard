@@ -1,5 +1,8 @@
-  <h2>Samples</h2>
-<div >
-    <p-chip *ngFor="let sample of samples" [label]="sample" class="p-1"></p-chip>
+<h2>Samples</h2>
+<div>
+  @for (sample of samples; track sample) {
+
+    <p-chip [label]="sample" class="p-1"></p-chip>
+  }
 </div>
 

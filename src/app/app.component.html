@@ -1,15 +1,3 @@
-<div class="nav-bar w-100  bg-black-alpha-20 flex justify-content-between align-content-center mb-2">
-  <div class="flex gap-3" >
+<app-navigation-header class="sticky"></app-navigation-header>
 
-    <p-button routerLink="/">Dashboard</p-button>
-    <p-button>Runs</p-button>
-    <p-button>Targets</p-button>
-    <p-button routerLink="/samples">Samples</p-button>
-  </div>
-  <div class="flex gap-3" >
-
-    <p-button>File manager</p-button>
-    <p-button (click)="resetStore()">Reset</p-button>
-  </div>
-</div>
-<router-outlet></router-outlet>
+<router-outlet/>

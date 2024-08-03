@@ -15,7 +15,7 @@ import { Store } from '@ngxs/store';
 @Component({
   selector: 'app-target-card',
   templateUrl: './target-card.component.html',
-  styleUrls: ['./target-card.component.sass'],
+  styleUrls: ['./target-card.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AsyncPipe, NgIf, RouterLink],

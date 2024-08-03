@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxsModule } from '@ngxs/store';
 import { GlobalState } from './store_xs/store.state';
 import { provideHttpClient } from '@angular/common/http';
+import { NavigationHeaderComponent } from '../components/navigation-header/navigation-header.component';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,6 +20,7 @@ import { provideHttpClient } from '@angular/common/http';
     NgxsModule.forRoot([GlobalState]),
     ButtonModule,
     BrowserAnimationsModule,
+    NavigationHeaderComponent,
   ],
   providers: [provideHttpClient()],
   exports: [],
