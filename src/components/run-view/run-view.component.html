@@ -4,7 +4,7 @@
 
   <p-table [value]="tableData" styleClass="p-datatable-striped"
            [tableStyle]="{ 'min-width': '60rem'}" [scrollable]="true"
-           scrollHeight="90vh"
+           scrollHeight="85vh"
   >
     <ng-template pTemplate="header">
       <tr>
@@ -54,7 +54,9 @@
       <tr>
         <td>{{ well.Well }}</td>
         <td>{{ well.Target }}</td>
-        <td>{{ well.Content }}</td>
+        <td>
+          <p-tag [value]="well.Content" [severity]="severityBySampleType.get(well.Content)"/>
+        </td>
         <td>{{ well.Sample }}</td>
         <td>{{ customNumFormat(well.Cq) }}</td>
         <td>{{ customNumFormat(well['Melt Temperature']) }}</td>
