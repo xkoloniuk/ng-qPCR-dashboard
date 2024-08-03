@@ -4,7 +4,6 @@ import { qPCRFile, qPCRrecord } from '../../interfaces/interface';
 import { ActivatedRoute } from '@angular/router';
 
 import { AsyncPipe, NgForOf } from '@angular/common';
-import { logMessages } from '@angular-devkit/build-angular/src/tools/esbuild/utils';
 import { Store } from '@ngxs/store';
 import { ChipModule } from 'primeng/chip';
 import { GlobalState } from '../../app/store_xs/store.state';
