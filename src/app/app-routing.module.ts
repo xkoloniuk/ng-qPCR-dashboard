@@ -6,6 +6,7 @@ import { RunViewComponent } from '../components/run-view/run-view.component';
 import { SampleCardComponent } from '../components/sample-card/sample-card.component';
 import { SamplesViewComponent } from '../components/samples-view/samples-view.component';
 import { StoreValuesGuard } from './guards/StoreFilesGuard';
+import { PlateTemplateComponent } from '../components/plate-template/plate-template.component';
 
 const routes: Routes = [
   { path: '', component: ShellComponent },
@@ -17,6 +18,11 @@ const routes: Routes = [
   {
     path: 'run/:runName',
     component: RunViewComponent,
+    canActivate: [StoreValuesGuard],
+  },
+  {
+    path: 'plate/:runName',
+    component: PlateTemplateComponent,
     canActivate: [StoreValuesGuard],
   },
 

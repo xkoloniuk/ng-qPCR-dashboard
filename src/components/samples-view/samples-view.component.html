@@ -1,8 +1,8 @@
 <h2>Samples</h2>
-<div>
+<div class="flex gap-1 flex-wrap">
   @for (sample of samples; track sample) {
 
-    <p-chip [label]="sample" class="p-1"></p-chip>
+    <p-tag [value]="sample" severity="secondary" class="p-1 hover:text-900"></p-tag>
   }
 </div>
 

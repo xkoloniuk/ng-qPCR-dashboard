@@ -1,0 +1,13 @@
+<div class="plate">
+  <div class="header"></div>
+  @for (col of columns; track col) {
+    <div class="header">{{ col }}</div>
+  }
+
+  @for (row of rows; track row) {
+    <div class="row-header">{{ row }}</div>
+    @for (col of columns; track col) {
+      <app-well-template [wellValue]="mappedPlateData().get(row + (col < 10 ? '0' : '') + col)"></app-well-template>
+    }
+  }
+</div>

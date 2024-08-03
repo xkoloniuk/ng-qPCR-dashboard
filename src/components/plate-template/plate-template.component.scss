@@ -1,0 +1,20 @@
+.plate {
+  display: grid;
+  grid-template-columns: auto repeat(12, 1fr);
+  grid-template-rows: auto repeat(8, 1fr);
+  gap: 2px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.plate > div {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.header, .row-header {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}

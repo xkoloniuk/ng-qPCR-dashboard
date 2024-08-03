@@ -7,6 +7,7 @@ import { AsyncPipe, NgForOf } from '@angular/common';
 import { Store } from '@ngxs/store';
 import { ChipModule } from 'primeng/chip';
 import { GlobalState } from '../../app/store_xs/store.state';
+import { TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-samples-view',
@@ -14,7 +15,7 @@ import { GlobalState } from '../../app/store_xs/store.state';
   styleUrls: ['./samples-view.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgForOf, ChipModule, AsyncPipe],
+  imports: [NgForOf, ChipModule, AsyncPipe, TagModule],
 })
 export class SamplesViewComponent implements OnInit {
   public samples = new Set<string>();

@@ -1,0 +1,8 @@
+<p>Sample: {{ wellValue?.Sample ?? '-' }}</p>
+<p>Target: {{ wellValue?.Target ?? '-' }}</p>
+<p>Cq:
+  <app-number-cq-tm-template [value]="wellValue?.Cq"></app-number-cq-tm-template>
+</p>
+<p>Tm:
+  <app-number-cq-tm-template [value]="wellValue?.Tm"></app-number-cq-tm-template>
+</p>
