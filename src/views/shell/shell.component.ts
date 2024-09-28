@@ -85,24 +85,7 @@ export class ShellComponent implements OnInit {
 
       const csvLines = csv.split('\n');
 
-      let fileInfo: qPCRFileInfo = {
-        'File Name': '',
-        'Created By User': '',
-        Notes: '',
-        ID: '',
-        'Run Started': '',
-        'Run Ended': '',
-        'Sample Vol': '',
-        'Lid Temp': '',
-        'Protocol File Name': '',
-        'Plate Setup File Name': '',
-        'Base Serial Number': '',
-        'Optical Head Serial Number': '',
-        'CFX Maestro Version': '',
-        'Well group': '',
-        'Amplification step': '',
-        'Melt step': '',
-      };
+      let fileInfo = {} as qPCRFileInfo;
 
       let columns: string[] = [];
       let data: Array<qPCRrecord> = [];
@@ -162,27 +145,7 @@ export class ShellComponent implements OnInit {
 
         // Transform data and names into an array of objects
 
-        let obj: qPCRrecord = {
-          Well: '',
-          Fluor: '',
-          Target: '',
-          Content: '',
-          Replicate: '',
-          Sample: '',
-          'Biological Set Name': '',
-          'Well Note': '',
-          Cq: '',
-          'Starting Quantity (SQ)': '',
-          'Cq Mean': '',
-          'Cq Std. Dev': '',
-          'SQ Std. Dev': '',
-          'Melt Temperature': '',
-          'Peak Height': '',
-          'Begin Temperature': '',
-          'End Temperature': '',
-          Call: '',
-          'End RFU': '',
-        };
+        let obj = {} as qPCRrecord;
 
         csValuesArr.forEach((value, index) => {
           const key = columns[index];

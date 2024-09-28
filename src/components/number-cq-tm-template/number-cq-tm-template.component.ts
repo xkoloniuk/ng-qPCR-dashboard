@@ -15,6 +15,7 @@ export class NumberCqTmTemplateComponent {
 
   @Input()
   set value(value: number | string) {
+    console.log('this is a value: ', value);
     this._value = this.checkIfNumberAndProceed(+value);
   }
 
@@ -22,16 +23,14 @@ export class NumberCqTmTemplateComponent {
     return this._value;
   }
 
-  private checkIfNumberAndProceed(value: number | string) {
-    if (!value) {
-      return '-';
-    } else if (typeof value === 'number' && !isNaN(value)) {
-      const transformedValue = this.decimalPipe.transform(value, '1.0-1');
-      return transformedValue !== null ? transformedValue : '-';
-    } else if (typeof value !== 'string' && isNaN(value)) {
+  private checkIfNumberAndProceed(value: number) {
+    if (isNaN(value)) {
+      console.log('Value is NaN', value);
       return '-';
     } else {
-      return value === '' ? '-' : value;
+      const transformedValue = this.decimalPipe.transform(value, '1.0-1');
+      console.log('transformed value: ', value);
+      return transformedValue !== null ? transformedValue : '-';
     }
   }
 }

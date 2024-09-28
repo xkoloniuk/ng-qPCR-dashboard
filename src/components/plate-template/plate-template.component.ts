@@ -1,4 +1,10 @@
-import { Component, computed, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { WellTemplateComponent } from '../well-template/well-template.component';
 import { Store } from '@ngxs/store';
 import { ActivatedRoute } from '@angular/router';
@@ -11,9 +17,10 @@ import { qPCRrecord } from '../../interfaces/interface';
   imports: [WellTemplateComponent],
   templateUrl: './plate-template.component.html',
   styleUrl: './plate-template.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlateTemplateComponent implements OnInit {
-  public rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+  public rows = 'ABCDEFGH'.split('');
   public columns = Array.from({ length: 12 }, (_, i) => i + 1);
 
   public fileName?;
