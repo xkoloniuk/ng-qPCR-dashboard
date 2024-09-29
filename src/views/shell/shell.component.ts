@@ -16,6 +16,7 @@ import { Store } from '@ngxs/store';
 import { AddQPCRFile, ResetState } from '../../app/store_xs/store.actions';
 import { Observable } from 'rxjs';
 import { GlobalState } from '../../app/store_xs/store.state';
+import { isNumber } from 'lodash';
 
 @Component({
   selector: 'ng-q-dashboard-shell',
@@ -85,7 +86,7 @@ export class ShellComponent implements OnInit {
       let columns: string[] = [];
       let data: Array<qPCRrecord> = [];
 
-      csvLines.forEach((csvLine, index) => {
+      csvLines.forEach((csvLine) => {
         // split line from CSV file into array
         const csValuesArr = csvLine.split(',');
         // check for null
@@ -147,6 +148,13 @@ export class ShellComponent implements OnInit {
           // @ts-ignore
           obj[key] = value;
         });
+
+        // either keep numeric values or replace with ''
+        obj.Cq = isNumber(+obj.Cq) ? +obj.Cq : '';
+        obj['Melt Temperature'] =
+          obj['Melt Temperature'] && isNumber(+obj['Melt Temperature'])
+            ? +obj['Melt Temperature']
+            : '';
 
         data.push(obj);
       });

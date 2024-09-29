@@ -1,8 +1,8 @@
 export interface qPCRFileInfo {
   'File Name': string;
   'Created By User': string;
-  'Notes': string;
-  'ID': string;
+  Notes: string;
+  ID: string;
   'Run Started': string;
   'Run Ended': string;
   'Sample Vol': string;
@@ -14,7 +14,7 @@ export interface qPCRFileInfo {
   'CFX Maestro Version': string;
   'Well group': string;
   'Amplification step': string;
-  'Melt step': string
+  'Melt step': string;
 }
 
 export interface qPCRrecord {
@@ -26,12 +26,12 @@ export interface qPCRrecord {
   Sample: string;
   'Biological Set Name'?: string;
   'Well Note'?: string;
-  Cq: string;
+  Cq: string | number;
   'Starting Quantity (SQ)'?: string;
   'Cq Mean'?: string;
   'Cq Std. Dev'?: string;
   'SQ Std. Dev'?: string;
-  'Melt Temperature'?: string;
+  'Melt Temperature'?: string | number;
   'Peak Height'?: string;
   'Begin Temperature'?: string;
   'End Temperature'?: string;
@@ -43,10 +43,10 @@ export interface qPCRFile {
   fileInfo: qPCRFileInfo;
   columns: Array<string>;
   counts: customqPCRCounts;
-  data: Array<qPCRrecord>
+  data: Array<qPCRrecord>;
 }
 
 interface customqPCRCounts {
   uniqueSamples: string[];
-  uniqueTargets: string[]
+  uniqueTargets: string[];
 }

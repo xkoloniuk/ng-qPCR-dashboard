@@ -7,7 +7,14 @@
   @for (row of rows; track row) {
     <div class="row-header">{{ row }}</div>
     @for (col of columns; track col) {
-      <app-well-template [wellValue]="mappedPlateData().get(row + (col < 10 ? '0' : '') + col)"></app-well-template>
+      <!--      get data for each well, single-digit wells have leading 0, so it is provided there by (col < 10) -->
+      @if (mappedPlateData().get(row + (col < 10 ? '0' : '') + col); as wellData) {
+        <div>
+          <app-well-template [wellValue]="wellData"></app-well-template>
+        </div>
+      } @else {
+        <div></div>
+      }
     }
   }
 </div>

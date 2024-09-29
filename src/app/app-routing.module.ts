@@ -21,9 +21,10 @@ const routes: Routes = [
     canActivate: [StoreValuesGuard],
   },
   {
-    path: 'plate/:runName',
+    path: 'plate',
+    // path: 'plate/:runName',
     component: PlateTemplateComponent,
-    canActivate: [StoreValuesGuard],
+    // canActivate: [StoreValuesGuard],
   },
 
   {
