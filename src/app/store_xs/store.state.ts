@@ -45,9 +45,6 @@ export class GlobalState {
     if (!state.samples) {
       return [];
     }
-    console.log(Array.from(state.samples));
-    console.log(state);
-    console.log(state.samples);
     return Array.from(state.samples);
   }
 
@@ -102,22 +99,6 @@ export class GlobalState {
       );
     };
   }
-
-  // @Selector()
-  // static selectFilesByTarget(target: string) {
-  //   return (state: GlobalStateModel): qPCRFile[] => {
-  //     if (!state.qPCRfiles) {
-  //       console.log('FIRST CASE');
-  //       return [];
-  //     }
-  //     return state.qPCRfiles.filter((file) =>
-  //       file.counts.uniqueTargets.some((uniqueTarget) => {
-  //         console.log('SECOND CASE');
-  //         return uniqueTarget === target;
-  //       }),
-  //     );
-  //   };
-  // }
 
   @Selector()
   static selectFilesByTarget(target: string) {

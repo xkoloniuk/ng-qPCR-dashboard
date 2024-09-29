@@ -78,15 +78,10 @@ export class ShellComponent implements OnInit {
   }
 
   processCsvFile(file: File) {
-    // console.log('processCsvFile CALLED')
-
     file.text().then((csv) => {
-      // console.log(csv)
-
       const csvLines = csv.split('\n');
 
       let fileInfo = {} as qPCRFileInfo;
-
       let columns: string[] = [];
       let data: Array<qPCRrecord> = [];
 
@@ -129,7 +124,7 @@ export class ShellComponent implements OnInit {
             fileInfo[csValuesArr[0]] = dateValue;
             return;
           }
-          //  remaining assign as they are
+          //  remaining are assigned as they are
           // @ts-ignore
           fileInfo[csValuesArr[0]] = csValuesArr[1];
           return;
@@ -180,15 +175,6 @@ export class ShellComponent implements OnInit {
     return { uniqueSamples, uniqueTargets };
   }
 }
-
-// interface qPcrRun {
-//   fileInfo: qPcrFileInfo,
-//   data: qPCRrecord[]
-// }
-
-// type qPcrFileInfo = {
-// [key in typeof qPCRFileInfoKeys[number]]: string
-// }
 
 interface NamedFile {
   key: string;

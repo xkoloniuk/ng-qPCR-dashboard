@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { DecimalPipe, JsonPipe } from '@angular/common';
 import { qPCRrecord } from '../../interfaces/interface';
-import _ from 'lodash';
+import { isNumber } from 'lodash';
 
 @Component({
   selector: 'app-well-template',
@@ -11,20 +11,19 @@ import _ from 'lodash';
   styleUrl: './well-template.component.scss',
 })
 export class WellTemplateComponent {
-  private _wellValue: { cq: null | number; tm: null | number } = {
-    cq: null,
-    tm: null,
-  };
+  private _wellValue = {} as qPCRrecord;
 
   @Input()
-  set wellValue(value: qPCRrecord) {
-    const cq = _.isNumber(value.Cq) ? +value.Cq : null;
+  set wellValue(value: qPCRrecord | undefined) {
+    const Cq = !!value && isNumber(value.Cq) ? +value.Cq : '';
     const tm =
-      !!value['Melt Temperature'] && _.isNumber(value['Melt Temperature'])
+      !!value &&
+      !!value['Melt Temperature'] &&
+      isNumber(value['Melt Temperature'])
         ? +value['Melt Temperature']
-        : null;
+        : '';
 
-    this._wellValue = { cq, tm };
+    this._wellValue = { Cq, 'Melt Temperature': tm } as qPCRrecord;
   }
 
   get wellValue() {
