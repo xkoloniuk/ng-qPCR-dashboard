@@ -1,9 +1,37 @@
-<p>Sample: {{ wellValue?.Sample ?? '-' }}</p>
-<p>Target: {{ wellValue?.Target ?? '-' }}</p>
-<p>Cq: {{
-   wellValue?.Cq | number: '1.1-1' }}
-</p>
-<p>Tm: {{
-   wellValue?.Tm | number: '1.1-1' }}
-</p>
+<p-card styleClass="h-full p-0">
+  <div class="flex flex-column justify-content-between">
 
+    <p class="m-0 mb-2">
+      {{ wellValue.Sample }}
+    </p>
+<div class="flex gap-1">
+
+
+    @if (wellValue.Cq; as cq) {
+
+      <p class="cq-value m-0">{{
+          cq | number: '1.1-1'
+        }}
+      </p>
+    }
+
+    @if (wellValue['Melt Temperature']; as mt) {
+
+      <p class="melt-temperature m-0">{{
+          mt | number: '1.1-1'
+        }}
+      </p>
+    }
+</div>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-tag styleClass="h-2rem">
+      <p class=" text-overflow-ellipsis white-space-nowrap text-sm">
+        {{ wellValue.Target }}
+      </p>
+    </p-tag>
+
+
+  </ng-template>
+
+</p-card>
