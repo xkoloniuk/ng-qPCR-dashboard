@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { Button } from 'primeng/button';
 import { Router, RouterLink } from '@angular/router';
 import { Store } from '@ngxs/store';
@@ -19,11 +19,12 @@ export class NavigationHeaderComponent implements OnInit {
   #store = inject(Store);
   #router = inject(Router);
   public areThereAnyFiles$ = new BehaviorSubject<boolean>(false);
+  private DestroyRef = inject(DestroyRef);
 
   public ngOnInit(): void {
     this.#store
       .select(GlobalState.selectFiles)
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.DestroyRef))
       .subscribe((data) => {
         this.areThereAnyFiles$.next(data.length > 0);
       });
