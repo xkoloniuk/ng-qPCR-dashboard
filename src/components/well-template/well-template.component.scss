@@ -1,4 +1,6 @@
-::ng-deep .p-card .p-card-body {
+::ng-deep .p-card {
+
+.p-card-body {
   display: flex;
   padding: 0.5rem 0;
   flex-direction: column;
@@ -7,3 +9,19 @@
   background: lightgray;
   height: 100%;
 }
+
+  .p-card-content {
+    padding: 0;
+  }
+}
+
+.cq-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.melt-temperature {
+  transform: translateY(-0.5rem);
+  font-size: 0.75rem;
+}
+
