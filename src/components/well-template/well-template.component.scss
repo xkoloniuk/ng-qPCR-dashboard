@@ -1,14 +1,14 @@
 ::ng-deep .p-card {
 
-.p-card-body {
-  display: flex;
-  padding: 0.5rem 0;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  background: lightgray;
-  height: 100%;
-}
+  .p-card-body {
+    display: flex;
+    padding: 0.5rem 0;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background: lightgray;
+    height: 100%;
+  }
 
   .p-card-content {
     padding: 0;
@@ -24,3 +24,10 @@
   font-size: 0.75rem;
 }
 
+.text-extra-small {
+  font-size: 0.75rem;
+}
+
+.control-sample {
+  border: 2px solid blue
+}

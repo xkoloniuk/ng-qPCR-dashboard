@@ -13,28 +13,25 @@ import { ColorService } from '../../services/color.service';
   imports: [JsonPipe, DecimalPipe, TagModule, CardModule, NgClass, BadgeModule],
   templateUrl: './well-template.component.html',
   styleUrl: './well-template.component.scss',
-  host: {},
+  host: {
+    '[class.control-sample]': 'isControl',
+  },
 })
 export class WellTemplateComponent implements OnDestroy {
+  public background = 'none';
+  #colorService = inject(ColorService);
+
   private _wellValue = {} as qPCRrecord;
 
-  public background = 'none';
+  public get wellValue() {
+    return this._wellValue;
+  }
 
   @Input()
   set wellValue(value: qPCRrecord) {
     this._wellValue = extractValues(value);
     const targetColor = this.#colorService.generatePalette(value.Target);
     this.background = targetColor || 'none';
-  }
-
-  #colorService = inject(ColorService);
-
-  public ngOnDestroy(): void {
-    this.#colorService.resetPalette();
-  }
-
-  public get wellValue() {
-    return this._wellValue;
   }
 
   public get wellType() {
@@ -50,6 +47,14 @@ export class WellTemplateComponent implements OnDestroy {
       default:
         return sampleType.UNKNOWN;
     }
+  }
+
+  public get isControl() {
+    return this._wellValue.Content !== 'Unkn';
+  }
+
+  public ngOnDestroy(): void {
+    this.#colorService.resetPalette();
   }
 }
 
