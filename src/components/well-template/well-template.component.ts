@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input, OnDestroy } from '@angular/core';
 import { DecimalPipe, JsonPipe, NgClass } from '@angular/common';
 import { qPCRrecord } from '../../interfaces/interface';
 import { isNumber } from 'lodash';
 import { TagModule } from 'primeng/tag';
 import { CardModule } from 'primeng/card';
 import { BadgeModule } from 'primeng/badge';
+import { ColorService } from '../../services/color.service';
 
 @Component({
   selector: 'app-well-template',
@@ -12,20 +13,31 @@ import { BadgeModule } from 'primeng/badge';
   imports: [JsonPipe, DecimalPipe, TagModule, CardModule, NgClass, BadgeModule],
   templateUrl: './well-template.component.html',
   styleUrl: './well-template.component.scss',
+  host: {},
 })
-export class WellTemplateComponent {
+export class WellTemplateComponent implements OnDestroy {
   private _wellValue = {} as qPCRrecord;
+
+  public background = 'none';
 
   @Input()
   set wellValue(value: qPCRrecord) {
     this._wellValue = extractValues(value);
+    const targetColor = this.#colorService.generatePalette(value.Target);
+    this.background = targetColor || 'none';
   }
 
-  get wellValue() {
+  #colorService = inject(ColorService);
+
+  public ngOnDestroy(): void {
+    this.#colorService.resetPalette();
+  }
+
+  public get wellValue() {
     return this._wellValue;
   }
 
-  get wellType() {
+  public get wellType() {
     switch (this._wellValue.Content) {
       case 'NTC':
         return sampleType.NTC;
@@ -39,8 +51,6 @@ export class WellTemplateComponent {
         return sampleType.UNKNOWN;
     }
   }
-
-  protected readonly sampleType = sampleType;
 }
 
 function extractValues(value: qPCRrecord) {
