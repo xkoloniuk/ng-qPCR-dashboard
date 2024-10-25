@@ -1,6 +1,6 @@
 .plate {
   display: grid;
-  grid-template-columns: auto repeat(12, 1fr);
+  grid-template-columns: repeat(13, 1fr);
   grid-template-rows: minmax(auto, 70px) repeat(8, 1fr);
   gap: 2px;
   max-width: 95%;
