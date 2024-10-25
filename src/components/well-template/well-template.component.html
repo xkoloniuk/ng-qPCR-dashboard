@@ -1,14 +1,11 @@
 <p-card styleClass="h-full p-0">
   <div class="flex flex-column justify-content-between">
-
     <p class="m-0 mb-2">
       {{ wellValue.Sample }}
     </p>
 <div class="flex gap-1">
 
-
     @if (wellValue.Cq; as cq) {
-
       <p class="cq-value m-0">{{
           cq | number: '1.1-1'
         }}
@@ -16,20 +13,20 @@
     }
 
     @if (wellValue['Melt Temperature']; as mt) {
-
-      <p class="melt-temperature m-0">{{
+      <sup class="melt-temperature m-0">{{
           mt | number: '1.1-1'
         }}
-      </p>
+      </sup>
     }
 </div>
   </div>
   <ng-template pTemplate="footer">
-    <p-tag styleClass="h-2rem">
-      <p class=" text-overflow-ellipsis white-space-nowrap text-sm">
+<span class="target-container border-1 p-1 border-round" [style.background]="background">
+      <span class="m-0 white-space-nowrap" [style.font-size.rem]="0.75">
         {{ wellValue.Target }}
-      </p>
-    </p-tag>
+</span>
+      </span>
+
 
 
   </ng-template>
