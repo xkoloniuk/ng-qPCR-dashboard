@@ -9,18 +9,12 @@ export class ColorService {
 
   private mapTargetColor: Map<string, string> = new Map();
 
-  private getColour(i: number) {
-    if (this.colours.length < i) {
-      return this.colours[i % this.colours.length];
-    }
-    return this.colours[i];
-  }
-
   public generatePalette(key: string) {
-    const currentItem = this.mapTargetColor.size;
-    const currentColour = this.getColour(currentItem);
-
+    if (!key) return undefined;
     if (this.mapTargetColor.has(key)) return this.mapTargetColor.get(key);
+
+    const currentItemIndex = this.mapTargetColor.size;
+    const currentColour = this.getColour(currentItemIndex);
 
     this.mapTargetColor.set(key, currentColour);
     return currentColour;
@@ -32,5 +26,12 @@ export class ColorService {
 
   public getPalette() {
     return this.mapTargetColor;
+  }
+
+  private getColour(i: number) {
+    if (this.colours.length < i) {
+      return this.colours[i % this.colours.length];
+    }
+    return this.colours[i];
   }
 }
