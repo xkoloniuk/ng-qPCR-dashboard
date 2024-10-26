@@ -1,26 +1,32 @@
-import { Component, inject, Input, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { DecimalPipe, JsonPipe, NgClass } from '@angular/common';
 import { qPCRrecord } from '../../interfaces/interface';
 import { isNumber } from 'lodash';
 import { TagModule } from 'primeng/tag';
 import { CardModule } from 'primeng/card';
 import { BadgeModule } from 'primeng/badge';
-import { ColorService } from '../../services/color.service';
+import { TargetTagComponent } from '../target-tag/target-tag.component';
 
 @Component({
   selector: 'app-well-template',
   standalone: true,
-  imports: [JsonPipe, DecimalPipe, TagModule, CardModule, NgClass, BadgeModule],
+  imports: [
+    JsonPipe,
+    DecimalPipe,
+    TagModule,
+    CardModule,
+    NgClass,
+    BadgeModule,
+    TargetTagComponent,
+  ],
   templateUrl: './well-template.component.html',
   styleUrl: './well-template.component.scss',
   host: {
     '[class.control-sample]': 'isControl',
   },
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class WellTemplateComponent implements OnDestroy {
-  public background = 'none';
-  #colorService = inject(ColorService);
-
+export class WellTemplateComponent {
   private _wellValue = {} as qPCRrecord;
 
   public get wellValue() {
@@ -30,8 +36,6 @@ export class WellTemplateComponent implements OnDestroy {
   @Input()
   set wellValue(value: qPCRrecord) {
     this._wellValue = extractValues(value);
-    const targetColor = this.#colorService.generatePalette(value.Target);
-    this.background = targetColor || 'none';
   }
 
   public get wellType() {
@@ -51,10 +55,6 @@ export class WellTemplateComponent implements OnDestroy {
 
   public get isControl() {
     return this._wellValue.Content !== 'Unkn';
-  }
-
-  public ngOnDestroy(): void {
-    this.#colorService.resetPalette();
   }
 }
 
