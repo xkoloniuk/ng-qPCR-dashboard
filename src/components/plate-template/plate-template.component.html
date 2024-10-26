@@ -1,11 +1,22 @@
 <div class="plate">
-  <div class="header"></div>
+  <div class="header">
+  </div>
   @for (col of columns; track col) {
-    <div class="header">{{ col }}</div>
+    <div class="column-header text-3rem flex-center text-color-secondary">
+    <span>
+      {{ col }}
+    </span>
+    </div>
   }
 
   @for (row of rows; track row) {
-    <div class="row-header">{{ row }}</div>
+    <div class="row-header text-3rem flex-center text-color-secondary">
+      <span>
+
+      {{ row }}
+      </span>
+    </div>
+
     @for (col of columns; track col) {
       <!--      get data for each well, single-digit wells have leading 0, so it is provided there by (col < 10) -->
       @if (mappedPlateData().get(row + (col < 10 ? '0' : '') + col); as wellData) {

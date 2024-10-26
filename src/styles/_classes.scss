@@ -1,7 +1,13 @@
 @import "variables";
 
-.text-extra-small {
-  font-size: 0.75rem;
+@each $name, $size in $font-sizes {
+  .text-#{$name} {
+    font-size: $size;
+  }
 }
 
-
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

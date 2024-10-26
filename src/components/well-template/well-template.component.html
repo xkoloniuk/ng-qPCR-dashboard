@@ -1,6 +1,6 @@
 <p-card styleClass="h-full p-0 relative">
   @if (isControl) {
-    <span class="absolute left-0 top-0 text-extra-small font-semibold"> {{ wellValue.Content }}</span>
+    <span class="absolute left-0 top-0 text-xs font-semibold"> {{ wellValue.Content }}</span>
   }
   <div class="flex flex-column justify-content-between ">
 
@@ -20,12 +20,12 @@
       }
 
       @if (wellValue['Melt Temperature']; as mt) {
-        <sup class="text-extra-small m-0">{{
+        <sup class="text-xs m-0">{{
             mt | number: '1.1-1'
           }}
         </sup>
       } @else {
-        <sup class="text-extra-small m-0">-
+        <sup class="text-xs m-0">-
         </sup>
       }
     </div>
