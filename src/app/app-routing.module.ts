@@ -7,6 +7,7 @@ import { SampleCardComponent } from '../components/sample-card/sample-card.compo
 import { SamplesViewComponent } from '../components/samples-view/samples-view.component';
 import { StoreValuesGuard } from './guards/StoreFilesGuard';
 import { PlateTemplateComponent } from '../components/plate-template/plate-template.component';
+import { ValidatorManagerComponent } from '../components/validator-manager/validator-manager.component';
 
 const routes: Routes = [
   { path: '', component: ShellComponent },
@@ -21,8 +22,8 @@ const routes: Routes = [
     canActivate: [StoreValuesGuard],
   },
   {
-    path: 'plate',
-    // path: 'plate/:runName',
+    // path: 'plate',
+    path: 'plate/:runName',
     component: PlateTemplateComponent,
     // canActivate: [StoreValuesGuard],
   },
@@ -35,6 +36,11 @@ const routes: Routes = [
   {
     path: 'samples',
     component: SamplesViewComponent,
+    canActivate: [StoreValuesGuard],
+  },
+  {
+    path: 'validator',
+    component: ValidatorManagerComponent,
     canActivate: [StoreValuesGuard],
   },
 ];
