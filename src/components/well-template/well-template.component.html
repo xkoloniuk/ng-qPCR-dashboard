@@ -14,12 +14,18 @@
             cq | number: '1.1-1'
           }}
         </p>
+      } @else {
+        <p class="text-xl m-0">-
+        </p>
       }
 
       @if (wellValue['Melt Temperature']; as mt) {
         <sup class="text-extra-small m-0">{{
             mt | number: '1.1-1'
           }}
+        </sup>
+      } @else {
+        <sup class="text-extra-small m-0">-
         </sup>
       }
     </div>
