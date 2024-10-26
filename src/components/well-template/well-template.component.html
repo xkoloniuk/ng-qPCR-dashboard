@@ -26,11 +26,8 @@
   </div>
 
   <ng-template pTemplate="footer">
-  <span [style.background]="background" class="target-container border-1 p-1 border-round">
-      <span [style.font-size.rem]="0.75" class="m-0 white-space-nowrap">
-        {{ wellValue.Target }}
-  </span>
-      </span>
+    <app-target-tag [target]="wellValue.Target"/>
+  
   </ng-template>
 
 </p-card>
