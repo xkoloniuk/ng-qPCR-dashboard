@@ -21,6 +21,10 @@ import { TargetTagComponent } from '../target-tag/target-tag.component';
   ],
   templateUrl: './well-template.component.html',
   styleUrl: './well-template.component.scss',
+  host: {
+    '(click)': 'showWellInfo()',
+    '[style.--card-background]': 'cardBackground',
+  },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WellTemplateComponent {
@@ -33,6 +37,21 @@ export class WellTemplateComponent {
   @Input()
   set wellValue(value: qPCRrecord) {
     this._wellValue = extractValues(value);
+  }
+
+  public get cardBackground() {
+    switch (this._wellValue.Content) {
+      case 'NTC':
+        return 'lightgrey';
+      case 'NRT':
+        return 'lightgreen';
+      case 'NC':
+        return 'lightpink';
+      case 'PC':
+        return 'green';
+      default:
+        return 'white';
+    }
   }
 
   public get wellType() {
@@ -52,6 +71,10 @@ export class WellTemplateComponent {
 
   public get isControl() {
     return this._wellValue.Content !== 'Unkn';
+  }
+
+  public showWellInfo() {
+    console.log(this.wellValue);
   }
 }
 
