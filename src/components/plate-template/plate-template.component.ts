@@ -9,6 +9,7 @@ import { WellTemplateComponent } from '../well-template/well-template.component'
 import { Store } from '@ngxs/store';
 import { ActivatedRoute } from '@angular/router';
 import { qPCRrecord } from '../../interfaces/interface';
+import { GlobalState } from '../../app/store_xs/store.state';
 
 @Component({
   selector: 'app-plate-template',
@@ -35,23 +36,23 @@ export class PlateTemplateComponent implements OnInit {
     private store: Store,
     private route: ActivatedRoute,
   ) {
-    // this.fileName = this.route.snapshot.paramMap.get('runName');
-    this.fileName = 'mock Data';
+    this.fileName = this.route.snapshot.paramMap.get('runName');
+    // this.fileName = 'mock Data';
   }
 
   ngOnInit() {
-    // if (this.fileName) {
-    //   this.store
-    //     .select(GlobalState.selectFileByFileName(this.fileName))
-    //     .subscribe((data) => {
-    //       if (data !== undefined) {
-    //         console.log(data);
-    //         this.plateData.set([...data.data]);
-    //       }
-    //     });
-    // }
+    if (this.fileName) {
+      this.store
+        .select(GlobalState.selectFileByFileName(this.fileName))
+        .subscribe((data) => {
+          if (data !== undefined) {
+            console.log(data);
+            this.plateData.set([...data.data]);
+          }
+        });
+    }
 
-    this.plateData.set([...mockData]);
+    // this.plateData.set([...mockData]);
   }
 }
 
