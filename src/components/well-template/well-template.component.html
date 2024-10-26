@@ -10,14 +10,14 @@
     <div class="flex gap-1">
 
       @if (wellValue.Cq; as cq) {
-        <p class="cq-value m-0">{{
+        <p class="text-xl font-bold m-0">{{
             cq | number: '1.1-1'
           }}
         </p>
       }
 
       @if (wellValue['Melt Temperature']; as mt) {
-        <sup class="melt-temperature m-0">{{
+        <sup class="text-extra-small m-0">{{
             mt | number: '1.1-1'
           }}
         </sup>
@@ -27,7 +27,7 @@
 
   <ng-template pTemplate="footer">
     <app-target-tag [target]="wellValue.Target"/>
-  
+
   </ng-template>
 
 </p-card>

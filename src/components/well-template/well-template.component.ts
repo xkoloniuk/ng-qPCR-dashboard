@@ -21,9 +21,6 @@ import { TargetTagComponent } from '../target-tag/target-tag.component';
   ],
   templateUrl: './well-template.component.html',
   styleUrl: './well-template.component.scss',
-  host: {
-    '[class.control-sample]': 'isControl',
-  },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WellTemplateComponent {
