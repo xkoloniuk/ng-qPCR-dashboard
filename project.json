@@ -27,8 +27,13 @@
           "src/assets"
         ],
         "styles": [
-          "src/styles.scss"
+          "src/styles/styles.scss"
         ],
+        "stylePreprocessorOptions": {
+          "includePaths": [
+            "src/styles"
+          ]
+        },
         "scripts": [],
         "webWorkerTsConfig": "tsconfig.worker.json",
         "browser": "src/main.ts"

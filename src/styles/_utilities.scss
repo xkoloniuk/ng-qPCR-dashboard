@@ -1,0 +1,7 @@
+.text {
+  @each $key, $value in $font-sizes {
+    &-#{$key} {
+      font-size: $value;
+    }
+  }
+}
