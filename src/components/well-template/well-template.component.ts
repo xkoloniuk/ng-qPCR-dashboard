@@ -48,6 +48,7 @@ export class WellTemplateComponent {
       case 'NC':
         return 'lightpink';
       case 'PC':
+      case 'Pos Ctrl':
         return 'green';
       default:
         return 'white';
@@ -63,6 +64,7 @@ export class WellTemplateComponent {
       case 'NC':
         return sampleType.NC;
       case 'PC':
+      case 'Pos Ctrl':
         return sampleType.PC;
       default:
         return sampleType.UNKNOWN;
