@@ -22,20 +22,22 @@
       <div class="page-container w-100 pl-8 pt-8">
 
         <div class="p-1">
-          {{ qPCRFiles.length + ' files were added' }}
+          {{ qPCRFiles.length === 1 ? qPCRFiles.length + ' file was added' : qPCRFiles.length + ' files were added' }}
 
         </div>
 
         @if (samples$ | async; as samples) {
 
           <div class="p-1">
-            {{ samples.length + ' samples were found' }}
+            {{ samples.length === 1 ? samples.length + ' sample was found' : samples.length + ' samples were found' }}
+
           </div>
         }
 
         @if (targets$ | async; as targets) {
           <div class="p-1">
-            {{ targets.length + ' targets were found' }}
+
+            {{ targets.length === 1 ? targets.length + ' target was found' : targets.length + ' targets were found' }}
 
           </div>
         }
