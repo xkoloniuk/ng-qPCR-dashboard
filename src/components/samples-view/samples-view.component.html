@@ -1,8 +1,24 @@
 <div class="flex justify-content-center">
 
-  <p-table [sortOrder]="-1" [tableStyle]="{ 'min-width': '50rem' }" [value]="(samples$ | async) ?? []"
+  <p-table #samplesTable [globalFilterFields]="['sample']" [sortOrder]="-1" [tableStyle]="{ 'min-width': '50rem' }"
+           [value]="(samples$ | async) ?? []"
+           dataKey="sample.sample"
            sortField="sample"
            styleClass="p-datatable-striped">
+
+    <ng-template pTemplate="caption">
+      <div class="flex">
+        <p-button (onClick)="clear(samplesTable)" [outlined]="true" icon="pi pi-filter-slash" label="Clear"/>
+        <span class="p-input-icon-left ml-auto">
+                    <i class="pi pi-search"></i>
+                    <input (input)="onGlobalFilter($event, samplesTable)"
+                           [(ngModel)]="searchValue" pInputText
+                           placeholder="Search keyword"
+                           type="text"/>
+                </span>
+      </div>
+    </ng-template>
+
     <ng-template pTemplate="header">
       <tr>
         <th pSortableColumn="sample">Sample
