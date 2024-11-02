@@ -2,7 +2,7 @@
 
   <div class="header">
     @if (!qPCRFiles.length) {
-      <div class="flex justify-content-center mt-6">
+      <div class="flex flex-column align-items-center gap-6 justify-content-center mt-6">
 
         <p-fileUpload
           mode="basic"
@@ -13,6 +13,10 @@
           [auto]="true" chooseLabel="Add qPCR csv files">
 
         </p-fileUpload>
+
+        <div routerLink="/plate/sample" class="mt-48 p-1 border-1 border-200 hover:bg-blue-100">
+          Or view sample file
+        </div>
 
       </div>
     }
@@ -36,7 +40,6 @@
 
         @if (targets$ | async; as targets) {
           <div class="p-1">
-
             {{ targets.length === 1 ? targets.length + ' target was found' : targets.length + ' targets were found' }}
 
           </div>

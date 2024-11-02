@@ -15,6 +15,9 @@ import { ColorService } from '../../services/color.service';
   imports: [CommonModule],
   templateUrl: './target-tag.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class: 'w-3rem',
+  },
 })
 export class TargetTagComponent implements OnDestroy {
   public target = input('');

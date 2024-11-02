@@ -37,11 +37,12 @@ export class PlateTemplateComponent implements OnInit {
     private route: ActivatedRoute,
   ) {
     this.fileName = this.route.snapshot.paramMap.get('runName');
-    // this.fileName = 'mock Data';
   }
 
   ngOnInit() {
-    if (this.fileName) {
+    if (this.fileName === 'sample' || !this.fileName) {
+      this.plateData.set([...mockData]);
+    } else {
       this.store
         .select(GlobalState.selectFileByFileName(this.fileName))
         .subscribe((data) => {
@@ -51,8 +52,6 @@ export class PlateTemplateComponent implements OnInit {
           }
         });
     }
-
-    // this.plateData.set([...mockData]);
   }
 }
 

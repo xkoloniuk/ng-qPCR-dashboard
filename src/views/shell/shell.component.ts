@@ -33,33 +33,12 @@ import { isNumber } from 'lodash';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShellComponent implements OnInit {
-  #store = inject(Store);
-
   public selectedFiles: WritableSignal<Array<NamedFile>> = signal([]);
   public qpcrFiles$!: Observable<qPCRFile[]>;
   public samples$!: Observable<string[]>;
   public targets$!: Observable<string[]>;
+  #store = inject(Store);
   private showProgressBar?: boolean;
-
-  // qPCRfile: qPCdata = {
-  //   data: [],
-  //   targets: [],
-  //   sampleTypes: [],
-  //   headers: [],
-  // };
-
-  // #fileReader = inject(FileToTextReaderService);
-
-  // onBasicUploadAuto($event: FileUploadEvent) {
-  //   console.log('onBasicUploadAuto CALLED')
-  //   // for (const file of $event.files) {
-  //   //   const add: NamedFile = {key: file.name, file: file};
-  //   //   this.selectedFiles.update(val => {
-  //   //     val.push(add)
-  //   //     return val
-  //   //   });
-  //   // }
-  // }
 
   public ngOnInit() {
     this.qpcrFiles$ = this.#store.select(GlobalState.selectFiles);
@@ -69,7 +48,7 @@ export class ShellComponent implements OnInit {
 
   public customHandler(files: File[]) {
     this.showProgressBar = true;
-    console.log('customHandler CALLED');
+    console.log('customHandler CALLED', files);
 
     this.#store.dispatch(new ResetState());
 
@@ -79,7 +58,9 @@ export class ShellComponent implements OnInit {
   }
 
   processCsvFile(file: File) {
+    console.log('that is file: ', file);
     file.text().then((csv) => {
+      console.log('that is csv: ', csv);
       const csvLines = csv.split('\n');
 
       let fileInfo = {} as qPCRFileInfo;
