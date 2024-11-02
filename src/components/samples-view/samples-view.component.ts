@@ -1,13 +1,14 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { qPCRFile } from '../../interfaces/interface';
-
-import { ActivatedRoute } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { AsyncPipe, NgForOf } from '@angular/common';
 import { Store } from '@ngxs/store';
 import { ChipModule } from 'primeng/chip';
 import { GlobalState } from '../../app/store_xs/store.state';
 import { TagModule } from 'primeng/tag';
+import { TableModule } from 'primeng/table';
+import { map, switchMap } from 'rxjs/operators';
+import { qPCRFile, SampleCount } from '../../interfaces/interface';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-samples-view',
@@ -15,29 +16,39 @@ import { TagModule } from 'primeng/tag';
   styleUrls: ['./samples-view.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgForOf, ChipModule, AsyncPipe, TagModule],
+  imports: [NgForOf, ChipModule, AsyncPipe, TagModule, TableModule],
 })
-export class SamplesViewComponent implements OnInit {
-  public samples = new Set<string>();
-  public tableData: qPCRFile[] = [];
-  public countsPerSample?: { sample: string; count: number }[] = [];
+export class SamplesViewComponent {
+  #store = inject(Store);
 
-  constructor(
-    private store: Store,
-    private route: ActivatedRoute,
-  ) {}
+  public samples$ = this.#store
+    .select(GlobalState.selectFiles)
+    .pipe(
+      map(this.getUniqueSamples),
+      switchMap(this.getSampleCountObs.bind(this)),
+    );
 
-  ngOnInit() {
-    this.store.select(GlobalState.selectFiles).subscribe((files: any) => {
-      files.forEach((file: any) =>
-        file.counts.uniqueSamples.forEach(this.samples.add, this.samples),
-      );
+  private getSampleCountObs(samples: string[]) {
+    const obs = samples.map((sample) =>
+      this.#store.select(GlobalState.selectFilesBySample(sample)).pipe(
+        map(
+          (files): SampleCount => ({
+            sample,
+            count: files.length,
+          }),
+        ),
+      ),
+    );
 
-      this.samples.forEach((sample) => this.getPlatesCount(sample));
-    });
+    return combineLatest(obs);
   }
 
-  getPlatesCount(sample: string) {
-    return this.store.select(GlobalState.selectFilesBySample(sample));
+  private getUniqueSamples(files: qPCRFile[]): string[] {
+    const uniqueSamplesSet = new Set<string>([]);
+    files.forEach((file: qPCRFile) =>
+      file.counts.uniqueSamples.forEach(uniqueSamplesSet.add, uniqueSamplesSet),
+    );
+
+    return Array.from(uniqueSamplesSet);
   }
 }

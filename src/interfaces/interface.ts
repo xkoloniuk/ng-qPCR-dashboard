@@ -50,3 +50,8 @@ interface customqPCRCounts {
   uniqueSamples: string[];
   uniqueTargets: string[];
 }
+
+export interface SampleCount {
+  sample: string;
+  count: number;
+}

@@ -1,8 +1,29 @@
-<h2>Samples</h2>
-<div class="flex gap-1 flex-wrap">
-  @for (sample of samples; track sample) {
+<div class="flex justify-content-center">
 
-    <p-tag [value]="sample" severity="secondary" class="p-1 hover:text-900"></p-tag>
-  }
+  <p-table [sortOrder]="-1" [tableStyle]="{ 'min-width': '50rem' }" [value]="(samples$ | async) ?? []"
+           sortField="sample"
+           styleClass="p-datatable-striped">
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="sample">Sample
+          <p-sortIcon field="sample"/>
+        </th>
+        <th pSortableColumn="count">Count of reactions
+          <p-sortIcon field="count"/>
+        </th>
+
+      </tr>
+    </ng-template>
+    <ng-template let-sample pTemplate="body">
+      <tr>
+        <td>{{ sample.sample }}</td>
+
+        <td>{{ sample.count }}</td>
+
+      </tr>
+    </ng-template>
+  </p-table>
+
+
 </div>
 
