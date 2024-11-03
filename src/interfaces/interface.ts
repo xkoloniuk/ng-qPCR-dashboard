@@ -1,42 +1,42 @@
 export interface qPCRFileInfo {
-  'File Name': string;
-  'Created By User': string;
-  Notes: string;
-  ID: string;
-  'Run Started': string;
-  'Run Ended': string;
-  'Sample Vol': string;
-  'Lid Temp': string;
-  'Protocol File Name': string;
-  'Plate Setup File Name': string;
-  'Base Serial Number': string;
-  'Optical Head Serial Number': string;
-  'CFX Maestro Version': string;
-  'Well group': string;
-  'Amplification step': string;
-  'Melt step': string;
+  fileName: string;
+  createdByUser: string;
+  notes: string;
+  iD: string;
+  runStarted: string;
+  runEnded: string;
+  sampleVol: string;
+  lidTemp: string;
+  protocolFileName: string;
+  plateSetupFileName: string;
+  baseSerialNumber: string;
+  opticalHeadSerialNumber: string;
+  cFXMaestroVersion: string;
+  wellgroup: string;
+  amplificationstep: string;
+  meltstep: string;
 }
 
 export interface qPCRrecord {
-  Well: string;
-  Fluor: string;
-  Target: string;
-  Content: string;
-  Replicate?: string;
-  Sample: string;
-  'Biological Set Name'?: string;
-  'Well Note'?: string;
-  Cq: string | number;
-  'Starting Quantity (SQ)'?: string;
-  'Cq Mean'?: string;
-  'Cq Std. Dev'?: string;
-  'SQ Std. Dev'?: string;
-  'Melt Temperature'?: string | number;
-  'Peak Height'?: string;
-  'Begin Temperature'?: string;
-  'End Temperature'?: string;
-  Call?: string;
-  'End RFU'?: string;
+  well: string;
+  fluor: string;
+  target: string;
+  content: string;
+  replicate?: string;
+  sample: string;
+  biologicalSetName?: string;
+  wellNote?: string;
+  cq: string | number;
+  startingQuantitySQ?: string;
+  cqMean?: string;
+  cqStdDev?: string;
+  sQStdDev?: string;
+  meltTemperature?: string | number;
+  peakHeight?: string;
+  beginTemperature?: string;
+  endTemperature?: string;
+  call?: string;
+  endRFU?: string;
 }
 
 export interface qPCRFile {

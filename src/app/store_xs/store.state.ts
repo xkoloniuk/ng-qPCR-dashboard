@@ -95,7 +95,7 @@ export class GlobalState {
         return undefined;
       }
       return state.global.qPCRfiles.find(
-        (file) => file.fileInfo['File Name'] === fileName,
+        (file) => file.fileInfo.fileName === fileName,
       );
     };
   }
@@ -149,17 +149,17 @@ export class GlobalState {
       ? new Set([...state.targets])
       : new Set<string>();
     action.file.counts.uniqueTargets.forEach((newTarget) => {
-      if (newTarget !== '') {
-        targets.add(newTarget);
-      }
+      if (newTarget === null || !newTarget) return;
+      targets.add(newTarget);
     });
 
     const samples = state.samples
       ? new Set([...state.samples])
       : new Set<string>();
-    action.file.counts.uniqueSamples.forEach((newSample) =>
-      samples.add(newSample),
-    );
+    action.file.counts.uniqueSamples.forEach((newSample) => {
+      if (newSample === null || !newSample) return;
+      samples.add(newSample);
+    });
 
     qPCRFiles.push(action.file);
 
@@ -177,7 +177,7 @@ export class GlobalState {
 
     ctx.patchState({
       qPCRfiles: qPCRFiles.filter(
-        (file) => file.fileInfo['File Name'] !== action.fileName,
+        (file) => file.fileInfo.fileName !== action.fileName,
       ),
     });
   }
@@ -192,7 +192,7 @@ export class GlobalState {
 
     ctx.patchState({
       qPCRfiles: qPCRFiles.filter(
-        (file) => !action.fileNames.includes(file.fileInfo['File Name']),
+        (file) => !action.fileNames.includes(file.fileInfo.fileName),
       ),
     });
   }

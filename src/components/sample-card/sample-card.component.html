@@ -1,4 +1,78 @@
-<h2>Samples</h2>
-<!--<div *ngIf="samples$ | async as samples">-->
-<!--  <p-chip *ngFor="let sample of samples" [label]="sample"></p-chip>-->
-<!--</div>-->
+<h2>Samples > {{ sample() }} </h2>
+
+<div class="flex justify-content-center">
+
+  <p-table #sampleTable [globalFilterFields]="['sampleFileName']" [sortOrder]="-1"
+           [tableStyle]="{ 'min-width': '50rem' }"
+           [value]="(sampleFiles$() | async) ?? []"
+           dataKey="fileInfo.fileName"
+           sortField="fileInfo.fileName"
+           styleClass="p-datatable-striped">
+
+    <ng-template pTemplate="caption">
+      <div class="flex">
+        <p-button (onClick)="clear(sampleTable)" [outlined]="true" icon="pi pi-filter-slash" label="Clear"/>
+        <span class="p-input-icon-left ml-auto">
+                    <i class="pi pi-search"></i>
+                    <input (input)="onGlobalFilter($event, sampleTable)"
+                           [(ngModel)]="searchValue" pInputText
+                           placeholder="Search keyword"
+                           type="text"/>
+                </span>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+
+        <th pSortableColumn="fileInfo.fileName">Run
+          <p-sortIcon field="fileInfo.fileName"/>
+        </th>
+
+        <th pSortableColumn="counts.uniqueSamples">Samples
+          <p-sortIcon field="counts.uniqueSamples"/>
+        </th>
+
+        <th pSortableColumn="counts.uniqueTargets">Targets
+          <p-sortIcon field="counts.uniqueTargets"/>
+        </th>
+        <th>Table view</th>
+        <th>Plate view</th>
+
+      </tr>
+    </ng-template>
+    <ng-template let-sample pTemplate="body">
+      <tr>
+        <td>
+          {{ sample.fileInfo.fileName }}
+        </td>
+
+        <td>
+          @for (sample of sample.counts.uniqueSamples; track $index) {
+            <span>
+              {{ sample }}
+            </span>
+          }
+        </td>
+
+        <td>
+          @for (target of sample.counts.uniqueTargets; track $index) {
+            <span>
+              {{ target }}
+            </span>
+          }
+        </td>
+
+        <td [routerLink]="['/run', sample.fileInfo.fileName]"
+            class="cursor-pointer "> Open table
+        </td>
+        <td [routerLink]="['/plate', sample.fileInfo.fileName]"
+            class="cursor-pointer "> Open plate
+        </td>
+
+      </tr>
+    </ng-template>
+  </p-table>
+
+
+</div>

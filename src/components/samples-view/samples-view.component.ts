@@ -14,6 +14,7 @@ import { InputIconModule } from 'primeng/inputicon';
 import { Button } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-samples-view',
@@ -32,6 +33,7 @@ import { FormsModule } from '@angular/forms';
     Button,
     InputTextModule,
     FormsModule,
+    RouterLink,
   ],
 })
 export class SamplesViewComponent {

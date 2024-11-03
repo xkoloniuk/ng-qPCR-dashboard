@@ -40,7 +40,7 @@ export class WellTemplateComponent {
   }
 
   public get cardBackground() {
-    switch (this._wellValue.Content) {
+    switch (this._wellValue.content) {
       case 'NTC':
         return 'lightgrey';
       case 'NRT':
@@ -56,7 +56,7 @@ export class WellTemplateComponent {
   }
 
   public get wellType() {
-    switch (this._wellValue.Content) {
+    switch (this._wellValue.content) {
       case 'NTC':
         return sampleType.NTC;
       case 'NRT':
@@ -72,7 +72,7 @@ export class WellTemplateComponent {
   }
 
   public get isControl() {
-    return this._wellValue.Content !== 'Unkn';
+    return this._wellValue.content !== 'Unkn';
   }
 
   public showWellInfo() {
@@ -81,17 +81,15 @@ export class WellTemplateComponent {
 }
 
 function extractValues(value: qPCRrecord) {
-  const Cq = !!value && isNumber(value.Cq) ? +value.Cq : '';
+  const cq = !!value && isNumber(value.cq) ? +value.cq : '';
   const tm =
-    !!value &&
-    !!value['Melt Temperature'] &&
-    isNumber(value['Melt Temperature'])
-      ? +value['Melt Temperature']
+    !!value && !!value.meltTemperature && isNumber(value.meltTemperature)
+      ? +value.meltTemperature
       : '';
   return {
     ...value,
-    Cq,
-    'Melt Temperature': tm,
+    cq,
+    meltTemperature: tm,
   } as qPCRrecord;
 }
 

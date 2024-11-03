@@ -3,8 +3,6 @@ import {
   Component,
   inject,
   OnInit,
-  signal,
-  WritableSignal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FileUploadModule } from 'primeng/fileupload';
@@ -33,12 +31,10 @@ import { isNumber } from 'lodash';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShellComponent implements OnInit {
-  public selectedFiles: WritableSignal<Array<NamedFile>> = signal([]);
   public qpcrFiles$!: Observable<qPCRFile[]>;
   public samples$!: Observable<string[]>;
   public targets$!: Observable<string[]>;
   #store = inject(Store);
-  private showProgressBar?: boolean;
 
   public ngOnInit() {
     this.qpcrFiles$ = this.#store.select(GlobalState.selectFiles);
@@ -47,9 +43,6 @@ export class ShellComponent implements OnInit {
   }
 
   public customHandler(files: File[]) {
-    this.showProgressBar = true;
-    console.log('customHandler CALLED', files);
-
     this.#store.dispatch(new ResetState());
 
     files.forEach((file: File) => {
@@ -58,9 +51,7 @@ export class ShellComponent implements OnInit {
   }
 
   processCsvFile(file: File) {
-    console.log('that is file: ', file);
     file.text().then((csv) => {
-      console.log('that is csv: ', csv);
       const csvLines = csv.split('\n');
 
       let fileInfo = {} as qPCRFileInfo;
@@ -102,13 +93,17 @@ export class ShellComponent implements OnInit {
             csValuesArr[0] === 'Run Ended'
           ) {
             const dateValue = new Date(Date.parse(csValuesArr[1]));
+            const camelCaseKey = this.toCamelCase(csValuesArr[0]);
             // @ts-ignore
-            fileInfo[csValuesArr[0]] = dateValue;
+            fileInfo[camelCaseKey] = dateValue;
             return;
           }
           //  remaining are assigned as they are
           // @ts-ignore
-          fileInfo[csValuesArr[0]] = csValuesArr[1];
+          const camelCaseKey = this.toCamelCase(csValuesArr[0]);
+
+          // @ts-ignore
+          fileInfo[camelCaseKey] = csValuesArr[1];
           return;
         }
 
@@ -125,17 +120,22 @@ export class ShellComponent implements OnInit {
         let obj = {} as qPCRrecord;
 
         csValuesArr.forEach((value, index) => {
-          const key = columns[index];
+          const camelCaseKey = this.toCamelCase(columns[index]);
+
           // @ts-ignore
-          obj[key] = value;
+          obj[camelCaseKey] = value;
         });
 
         // either keep numeric values or replace with ''
-        obj.Cq = isNumber(+obj.Cq) ? +obj.Cq : '';
-        obj['Melt Temperature'] =
-          obj['Melt Temperature'] && isNumber(+obj['Melt Temperature'])
-            ? +obj['Melt Temperature']
+        obj.cq = isNumber(+obj.cq) ? +obj.cq : '';
+        obj.meltTemperature =
+          obj.meltTemperature && isNumber(+obj.meltTemperature)
+            ? +obj.meltTemperature
             : '';
+
+        // handle empty data gracefully
+        obj.target = obj.target ? obj.target : 'NA';
+        obj.sample = obj.sample ? obj.sample : 'NA';
 
         data.push(obj);
       });
@@ -154,18 +154,24 @@ export class ShellComponent implements OnInit {
   }
 
   private generateReport(inputData: Partial<qPCRFile>) {
-    console.log('generate report');
-    const samples = inputData?.data?.map((wellData) => wellData.Sample);
-    const targets = inputData?.data?.map((wellData) => wellData.Target);
+    const samples = inputData?.data?.map((wellData) => wellData.sample);
+    const targets = inputData?.data?.map((wellData) => wellData.target);
 
     const uniqueSamples = Array.from(new Set(samples));
     const uniqueTargets = Array.from(new Set(targets));
 
     return { uniqueSamples, uniqueTargets };
   }
-}
 
-interface NamedFile {
-  key: string;
-  file: File;
+  private toCamelCase(text: string) {
+    const symbolsToRemove = /[.\(\)]/g;
+
+    const splicedSpacesText = text
+      .replaceAll(symbolsToRemove, '')
+      .split(' ')
+      .join('');
+    return (
+      splicedSpacesText.charAt(0).toLowerCase() + splicedSpacesText.slice(1)
+    );
+  }
 }

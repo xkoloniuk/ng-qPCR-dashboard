@@ -32,7 +32,12 @@
     </ng-template>
     <ng-template let-sample pTemplate="body">
       <tr>
-        <td>{{ sample.sample }}</td>
+        <td>
+          <a [routerLink]="'/samples/' + sample.sample">
+
+            {{ sample.sample }}
+          </a>
+        </td>
 
         <td>{{ sample.count }}</td>
 

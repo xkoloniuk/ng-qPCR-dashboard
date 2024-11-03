@@ -23,10 +23,9 @@ import { map } from 'rxjs/operators';
 })
 export class TargetCardComponent implements OnInit {
   @Input() target: string = '';
-
-  private store = inject(Store);
   public platesByTarget$!: Observable<qPCRFile[]>;
   public reactionsByTarget$!: Observable<number>;
+  private store = inject(Store);
 
   ngOnInit() {
     this.platesByTarget$ = this.store.select(
@@ -42,7 +41,7 @@ export class TargetCardComponent implements OnInit {
 
           files.forEach((file) => {
             const reactionsWithTarget = file.data.filter(
-              (wellData) => wellData.Target === this.target,
+              (wellData) => wellData.target === this.target,
             );
 
             // calculate all reactions
@@ -50,7 +49,7 @@ export class TargetCardComponent implements OnInit {
 
             // get all unique samples
             reactionsWithTarget.forEach((reaction) =>
-              uniqueSamplesWithTarget.add(reaction.Sample),
+              uniqueSamplesWithTarget.add(reaction.sample),
             );
           });
           return reactions;
