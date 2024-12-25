@@ -32,6 +32,8 @@ export class NavigationHeaderComponent implements OnInit {
 
   public resetStore() {
     this.#store.dispatch(new ResetState());
-    this.#router.navigate(['']);
+    this.#router.navigate(['']).catch((error) => {
+      console.error('Navigation error: ', error);
+    });
   }
 }
