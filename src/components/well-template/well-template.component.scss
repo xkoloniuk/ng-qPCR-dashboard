@@ -1,9 +1,16 @@
-::ng-deep .p-card .p-card-body {
-  display: flex;
-  padding: 0.5rem 0;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  background: lightgray;
-  height: 100%;
+::ng-deep .p-card {
+
+  .p-card-body {
+    display: flex;
+    padding: 0.5rem 0;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--card-background, lightgray);
+    height: 100%;
+  }
+
+  .p-card-content {
+    padding: 0;
+  }
 }

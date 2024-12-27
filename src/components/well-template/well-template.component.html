@@ -1,32 +1,38 @@
-<p-card styleClass="h-full p-0">
-  <div class="flex flex-column justify-content-between">
+<p-card styleClass="h-full p-0 relative">
+  @if (isControl) {
+    <span class="absolute left-0 top-0 text-xs font-semibold"> {{ wellValue.content }}</span>
+  }
+  <div class="flex flex-column justify-content-between ">
 
-    <p>
-      {{ wellValue.Sample }}
+    <p class="m-0 mb-2">
+      {{ wellValue.sample }}
     </p>
+    <div class="flex gap-1">
 
-    @if (wellValue.Cq; as cq) {
+      @if (wellValue.cq; as cq) {
+        <p class="text-xl font-bold m-0">{{
+            cq | number: '1.1-1'
+          }}
+        </p>
+      } @else {
+        <p class="text-xl m-0">-
+        </p>
+      }
 
-      <p>Cq: {{
-          cq | number: '1.1-1'
-        }}
-      </p>
-    }
-    @if (wellValue['Melt Temperature']; as mt) {
-
-      <p>Tm: {{
-          mt | number: '1.1-1'
-        }}
-      </p>
-    }
+      @if (wellValue.meltTemperature; as mt) {
+        <sup class="text-xs m-0">{{
+            mt | number: '1.1-1'
+          }}
+        </sup>
+      } @else {
+        <sup class="text-xs m-0">-
+        </sup>
+      }
+    </div>
   </div>
-  <ng-template pTemplate="footer">
-    <p-tag styleClass="h-2rem">
-      <p class=" text-overflow-ellipsis white-space-nowrap text-sm">
-        {{ wellValue.Target }}
-      </p>
-    </p-tag>
 
+  <ng-template pTemplate="footer">
+    <app-target-tag [target]="wellValue.target"/>
 
   </ng-template>
 

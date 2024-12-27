@@ -2,27 +2,29 @@
 
 <div class="container flex justify-content-center w-11 p-4">
 
-  <p-table [value]="tableData" styleClass="p-datatable-striped"
-           [tableStyle]="{ 'min-width': '60rem'}" [scrollable]="true"
+  <p-table [scrollable]="true" [tableStyle]="{ 'min-width': '60rem'}"
+           [value]="tableData" dataKey="well"
            scrollHeight="85vh"
+           styleClass="p-datatable-striped"
   >
     <ng-template pTemplate="header">
       <tr>
-        <th pSortableColumn="Well">Well
-          <p-columnFilter type="text" field="Well" display="menu"></p-columnFilter>
-          <p-sortIcon field="Well"></p-sortIcon>
+        <th pSortableColumn="well">Well
+          <p-columnFilter display="menu" field="well" type="text"></p-columnFilter>
+          <p-sortIcon field="well"></p-sortIcon>
         </th>
         <th pSortableColumn="Target">Target
-          <p-columnFilter field="Target" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false"
-                          [showAddButton]="false">
+          <p-columnFilter [showAddButton]="false" [showMatchModes]="false" [showOperator]="false" display="menu"
+                          field="target"
+                          matchMode="in">
             <ng-template pTemplate="header">
               <div class="px-3 pt-3 pb-0">
                 <span class="font-bold">Target Picker</span>
               </div>
             </ng-template>
-            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-              <p-multiSelect [ngModel]="value" [options]="targets" placeholder="Any" (onChange)="filter($event.value)"
-                             optionLabel="name">
+            <ng-template let-filter="filterCallback" let-value pTemplate="filter">
+              <p-multiSelect (onChange)="filter($event.value)" [ngModel]="value" [options]="targets" optionLabel="name"
+                             placeholder="Any">
                 <ng-template let-option pTemplate="item">
                   <div class="inline-block vertical-align-middle">
                     <span class="ml-1 mt-1">{{ option }}</span>
@@ -31,36 +33,36 @@
               </p-multiSelect>
             </ng-template>
           </p-columnFilter>
-          <p-sortIcon field="Target"></p-sortIcon>
+          <p-sortIcon field="target"></p-sortIcon>
         </th>
-        <th pSortableColumn="Content">Sample Type
-          <p-columnFilter type="text" field="Content" display="menu"></p-columnFilter>
-          <p-sortIcon field="Content"></p-sortIcon>
+        <th pSortableColumn="content">Sample Type
+          <p-columnFilter display="menu" field="content" type="text"></p-columnFilter>
+          <p-sortIcon field="content"></p-sortIcon>
         </th>
         <th pSortableColumn="Sample">Sample
-          <p-columnFilter type="text" field="Sample" display="menu"></p-columnFilter>
-          <p-sortIcon field="Sample"></p-sortIcon>
+          <p-columnFilter display="menu" field="sample" type="text"></p-columnFilter>
+          <p-sortIcon field="sample"></p-sortIcon>
         </th>
-        <th pSortableColumn="Cq">Cq
-          <p-columnFilter type="number" field="Cq" display="menu"></p-columnFilter>
-          <p-sortIcon field="Cq"></p-sortIcon>
+        <th pSortableColumn="cq">Cq
+          <p-columnFilter display="menu" field="cq" type="number"></p-columnFilter>
+          <p-sortIcon field="cq"></p-sortIcon>
         </th>
         <th>Melt temp</th>
         <th>Melt peak</th>
 
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-well>
+    <ng-template let-well pTemplate="body">
       <tr>
-        <td>{{ well.Well }}</td>
-        <td>{{ well.Target }}</td>
+        <td>{{ well.well }}</td>
+        <td>{{ well.target }}</td>
         <td>
-          <p-tag [value]="well.Content" [severity]="severityBySampleType.get(well.Content)"/>
+          <p-tag [severity]="severityBySampleType.get(well.content)" [value]="well.content"/>
         </td>
-        <td>{{ well.Sample }}</td>
-        <td>{{ customNumFormat(well.Cq) }}</td>
-        <td>{{ customNumFormat(well['Melt Temperature']) }}</td>
-        <td>{{ customNumFormat(well['Peak Height']) }}</td>
+        <td>{{ well.sample }}</td>
+        <td>{{ customNumFormat(well.cq) }}</td>
+        <td>{{ customNumFormat(well.meltTemperature) }}</td>
+        <td>{{ customNumFormat(well.peakHeight) }}</td>
 
       </tr>
     </ng-template>

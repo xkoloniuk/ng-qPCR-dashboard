@@ -21,8 +21,8 @@ const routes: Routes = [
     canActivate: [StoreValuesGuard],
   },
   {
-    path: 'plate',
-    // path: 'plate/:runName',
+    // path: 'plate',
+    path: 'plate/:runName',
     component: PlateTemplateComponent,
     // canActivate: [StoreValuesGuard],
   },
@@ -40,7 +40,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { bindToComponentInputs: true })],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

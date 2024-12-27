@@ -1,6 +1,6 @@
 <div class="text-indigo-700 font-bold text-xl py-3">{{ 'Plate files for ' + target }}</div>
 
-<p-table [value]="tableData" [tableStyle]="{ 'min-width': '50rem' }">
+<p-table [tableStyle]="{ 'min-width': '50rem' }" [value]="tableData">
   <ng-template pTemplate="header">
     <tr>
       <th>File Name</th>
@@ -10,14 +10,14 @@
 
     </tr>
   </ng-template>
-  <ng-template pTemplate="body" let-file>
+  <ng-template let-file pTemplate="body">
     <tr>
-      <td>{{ file.fileInfo['File Name'] }}</td>
-      <td>{{ file.fileInfo['Run Started'] | date }}</td>
-      <td [routerLink]="['/run', file.fileInfo['File Name']]"
+      <td>{{ file.fileInfo.fileName }}</td>
+      <td>{{ file.fileInfo.runStarted | date }}</td>
+      <td [routerLink]="['/run', file.fileInfo.fileName]"
           class="cursor-pointer "> Open table
       </td>
-      <td [routerLink]="['/plate', file.fileInfo['File Name']]"
+      <td [routerLink]="['/plate', file.fileInfo.fileName]"
           class="cursor-pointer "> Open plate
       </td>
     </tr>

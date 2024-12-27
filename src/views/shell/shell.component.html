@@ -2,7 +2,7 @@
 
   <div class="header">
     @if (!qPCRFiles.length) {
-      <div class="flex justify-content-center mt-6">
+      <div class="flex flex-column align-items-center gap-6 justify-content-center mt-6">
 
         <p-fileUpload
           mode="basic"
@@ -14,6 +14,10 @@
 
         </p-fileUpload>
 
+        <div routerLink="/plate/sample" class="mt-48 p-1 border-1 border-200 hover:bg-blue-100">
+          Or view sample file
+        </div>
+
       </div>
     }
     @if (qPCRFiles.length) {
@@ -22,20 +26,21 @@
       <div class="page-container w-100 pl-8 pt-8">
 
         <div class="p-1">
-          {{ qPCRFiles.length + ' files were added' }}
+          {{ qPCRFiles.length === 1 ? qPCRFiles.length + ' file was added' : qPCRFiles.length + ' files were added' }}
 
         </div>
 
         @if (samples$ | async; as samples) {
 
           <div class="p-1">
-            {{ samples.length + ' samples were found' }}
+            {{ samples.length === 1 ? samples.length + ' sample was found' : samples.length + ' samples were found' }}
+
           </div>
         }
 
         @if (targets$ | async; as targets) {
           <div class="p-1">
-            {{ targets.length + ' targets were found' }}
+            {{ targets.length === 1 ? targets.length + ' target was found' : targets.length + ' targets were found' }}
 
           </div>
         }

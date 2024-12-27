@@ -1,7 +1,7 @@
 .plate {
   display: grid;
-  grid-template-columns: auto repeat(12, 1fr);
-  grid-template-rows: auto repeat(8, 1fr);
+  grid-template-columns: repeat(13, 1fr);
+  grid-template-rows: minmax(auto, 70px) repeat(8, 1fr);
   gap: 2px;
   max-width: 95%;
   min-width: 1440px;
@@ -15,7 +15,7 @@
   font-family: Arial, sans-serif;
 }
 
-.header, .row-header {
+.header, .column-header, .row-header {
   background-color: #f0f0f0;
   font-weight: bold;
 }
