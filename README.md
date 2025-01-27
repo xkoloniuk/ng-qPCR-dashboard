@@ -1,6 +1,9 @@
-# NgQDashboard
+# Ng QPCR Dashboard
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.11.
+Current Angular version - 18.1.2.
+
+A front-end application designed to process and visualize qPCR data from uploaded CSV files (Exported from BioRad CFX machines). The application enables users to view raw data, aggregate it by targets and samples, and perform basic evaluations directly in the browser without backend integration.
 
 ## Development server
 
