@@ -15,6 +15,7 @@ import { AddQPCRFile, ResetState } from '../../app/store_xs/store.actions';
 import { Observable } from 'rxjs';
 import { GlobalState } from '../../app/store_xs/store.state';
 import { isNumber } from 'lodash';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'ng-q-dashboard-shell',
@@ -34,7 +35,19 @@ export class ShellComponent implements OnInit {
   public qpcrFiles$!: Observable<qPCRFile[]>;
   public samples$!: Observable<string[]>;
   public targets$!: Observable<string[]>;
+  private sampleFiles: File[] = [];
+
   #store = inject(Store);
+  #http = inject(HttpClient);
+
+  private SAMPLE_FILES_PATHS = [
+    'assets/admin_2023-12-19 12-52-33_BR007856_23-12-19 SnIV1-2696-2697 plate 5_All Wells.csv',
+    'assets/admin_2023-12-19 14-42-32_BR007856 23-12-19 CCGaV-2523-2515 plate 4_All Wells.csv',
+    'assets/admin_2023-12-20 07-53-35_BR007856 23-12-19 AluV1-2699-2698 plate 3_All Wells.csv',
+    'assets/admin_2024-01-04 10-05-29_BR007856 24-01-04 CCGaV 2564-2526 plate 2_All Wells.csv',
+    'assets/admin_2024-01-04 11-43-31_BR007856  24-01-04 SnIV1-2696-2697 plate 3_All Wells.csv',
+    'assets/admin_2024-01-04 13-21-45_BR007856 24-01-04 Malus plate 1_All Wells.csv',
+  ];
 
   public ngOnInit() {
     this.qpcrFiles$ = this.#store.select(GlobalState.selectFiles);
@@ -44,9 +57,28 @@ export class ShellComponent implements OnInit {
 
   public customHandler(files: File[]) {
     this.#store.dispatch(new ResetState());
-
+    console.log(files);
     files.forEach((file: File) => {
       this.processCsvFile(file);
+    });
+  }
+
+  public sampleFilesUpload() {
+    this.SAMPLE_FILES_PATHS.forEach((filePath) => {
+      this.#http.get(filePath, { responseType: 'blob' }).subscribe({
+        next: (blob) => {
+          const fileName = filePath.split('/').pop() || 'sample.csv';
+          const file = new File([blob], fileName, {
+            type: 'text/csv',
+          });
+
+          this.customHandler([file]);
+        },
+        error: (error) => {
+          console.error(`Error loading sample file ${filePath}:`, error);
+        },
+        complete: () => this.customHandler(this.sampleFiles),
+      });
     });
   }
 
