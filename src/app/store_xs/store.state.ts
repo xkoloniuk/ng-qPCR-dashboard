@@ -37,7 +37,7 @@ export class GlobalState {
     if (!state.targets) {
       return [];
     }
-    return Array.from(state.targets);
+    return Array.from(state.targets).sort();
   }
 
   @Selector()
