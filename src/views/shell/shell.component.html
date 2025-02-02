@@ -10,12 +10,12 @@
           [multiple]="true"
           [customUpload]="true"
           (uploadHandler)="customHandler($event.files)"
-          [auto]="true" chooseLabel="Add qPCR csv files">
+          [auto]="true" chooseLabel="Add qPCR csv file(s)">
 
         </p-fileUpload>
 
         <div (click)="sampleFilesUpload()" class="mt-48 p-1 border-1 border-200 hover:bg-blue-100">
-          Or view sample file
+          Or view sample files
         </div>
 
       </div>
