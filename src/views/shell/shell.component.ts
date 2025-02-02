@@ -37,7 +37,6 @@ export class ShellComponent implements OnInit {
     'assets/admin_2023-12-20 07-53-35_BR007856 23-12-19 AluV1-2699-2698 plate 3_All Wells.csv',
     'assets/admin_2024-01-04 10-05-29_BR007856 24-01-04 CCGaV 2564-2526 plate 2_All Wells.csv',
     'assets/admin_2024-01-04 11-43-31_BR007856  24-01-04 SnIV1-2696-2697 plate 3_All Wells.csv',
-    'assets/admin_2024-01-04 13-21-45_BR007856 24-01-04 Malus plate 1_All Wells.csv',
   ];
 
   public ngOnInit() {
