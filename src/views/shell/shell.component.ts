@@ -6,9 +6,6 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FileUploadModule } from 'primeng/fileupload';
-import { TargetCardComponent } from '../../components/target-card/target-card.component';
-
-import { RouterLink, RouterOutlet } from '@angular/router';
 import { qPCRFile, qPCRFileInfo, qPCRrecord } from '../../interfaces/interface';
 import { Store } from '@ngxs/store';
 import { AddQPCRFile, ResetState } from '../../app/store_xs/store.actions';
@@ -16,25 +13,19 @@ import { Observable } from 'rxjs';
 import { GlobalState } from '../../app/store_xs/store.state';
 import { isNumber } from 'lodash';
 import { HttpClient } from '@angular/common/http';
+import { TargetsViewComponent } from '../../components/targets-view/targets-view.component';
 
 @Component({
   selector: 'ng-q-dashboard-shell',
   standalone: true,
-  imports: [
-    CommonModule,
-    FileUploadModule,
-    TargetCardComponent,
-    RouterLink,
-    RouterOutlet,
-  ],
+  imports: [CommonModule, FileUploadModule, TargetsViewComponent],
   templateUrl: './shell.component.html',
   styleUrls: ['./shell.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShellComponent implements OnInit {
   public qpcrFiles$!: Observable<qPCRFile[]>;
-  public samples$!: Observable<string[]>;
-  public targets$!: Observable<string[]>;
+
   private sampleFiles: File[] = [];
 
   #store = inject(Store);
@@ -51,13 +42,10 @@ export class ShellComponent implements OnInit {
 
   public ngOnInit() {
     this.qpcrFiles$ = this.#store.select(GlobalState.selectFiles);
-    this.samples$ = this.#store.select(GlobalState.selectSamplesNames);
-    this.targets$ = this.#store.select(GlobalState.selectTargetsNames);
   }
 
   public customHandler(files: File[]) {
     this.#store.dispatch(new ResetState());
-    console.log(files);
     files.forEach((file: File) => {
       this.processCsvFile(file);
     });
