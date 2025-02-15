@@ -1,8 +1,8 @@
-<h2>Samples > {{ sample() }} </h2>
+<h2>Samples > {{ selectedSample() }} </h2>
 
 <div class="flex justify-content-center">
 
-  <p-table #sampleTable [globalFilterFields]="['sampleFileName']" [sortOrder]="-1"
+  <p-table #sampleTable [globalFilterFields]="['fileInfo.fileName', 'counts.uniqueSamples' ]" [sortOrder]="-1"
            [tableStyle]="{ 'min-width': '50rem' }"
            [value]="(sampleFiles$() | async) ?? []"
            dataKey="fileInfo.fileName"
@@ -15,7 +15,7 @@
         <span class="p-input-icon-left ml-auto">
                     <i class="pi pi-search"></i>
                     <input (input)="onGlobalFilter($event, sampleTable)"
-                           [(ngModel)]="searchValue" pInputText
+                           pInputText
                            placeholder="Search keyword"
                            type="text"/>
                 </span>
@@ -49,7 +49,7 @@
 
         <td>
           @for (sample of sample.counts.uniqueSamples; track $index) {
-            <span>
+            <span [style.font-weight]="selectedSample() === sample ? 800 : 400">
               {{ sample }}
             </span>
           }

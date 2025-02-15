@@ -6,7 +6,7 @@ import {
   input,
 } from '@angular/core';
 import { ChipModule } from 'primeng/chip';
-import { AsyncPipe, JsonPipe, NgForOf, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { GlobalState } from '../../app/store_xs/store.state';
 import { Store } from '@ngxs/store';
 import { Button } from 'primeng/button';
@@ -23,10 +23,7 @@ import { RouterLink } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ChipModule,
-    NgIf,
-    NgForOf,
     AsyncPipe,
-    JsonPipe,
     Button,
     InputTextModule,
     PaginatorModule,
@@ -35,22 +32,19 @@ import { RouterLink } from '@angular/router';
   ],
 })
 export class SampleCardComponent {
-  sample = input<string>('');
-  public searchValue = '';
+  selectedSample = input<string>('', { alias: 'sample' });
   #store = inject(Store);
 
   public sampleFiles$ = computed(() =>
-    this.#store.select(GlobalState.selectFilesBySample(this.sample())),
+    this.#store.select(GlobalState.selectFilesBySample(this.selectedSample())),
   );
 
   public onGlobalFilter($event: Event, samplesTable: Table) {
     const inputElement = $event.target as HTMLInputElement;
-
     samplesTable.filterGlobal(inputElement.value, 'contains');
   }
 
   public clear(table: Table) {
     table.clear();
-    this.searchValue = '';
   }
 }
