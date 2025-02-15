@@ -161,6 +161,8 @@ export class GlobalState {
       samples.add(newSample);
     });
 
+    action.file.counts.uniqueSamples.sort((a, b) => a.localeCompare(b));
+
     qPCRFiles.push(action.file);
 
     ctx.patchState({
