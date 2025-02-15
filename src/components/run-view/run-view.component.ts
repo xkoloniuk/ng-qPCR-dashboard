@@ -18,7 +18,7 @@ type TagSeverity =
   | 'success'
   | 'secondary'
   | 'info'
-  | 'warning'
+  | 'warn'
   | 'danger'
   | 'contrast';
 
@@ -40,7 +40,7 @@ export class RunViewComponent implements OnInit {
 
   protected severityBySampleType = new Map<string, TagSeverity>([
     ['Unkn', 'info'],
-    ['NTC', 'warning'],
+    ['NTC', 'warn'],
     ['NRT', 'danger'],
     ['Pos Ctrl', 'success'],
   ]);

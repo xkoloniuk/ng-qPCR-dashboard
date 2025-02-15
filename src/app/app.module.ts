@@ -10,6 +10,9 @@ import { NgxsModule } from '@ngxs/store';
 import { GlobalState } from './store_xs/store.state';
 import { provideHttpClient } from '@angular/common/http';
 import { NavigationHeaderComponent } from '../components/navigation-header/navigation-header.component';
+import { providePrimeNG } from 'primeng/config';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import Nora from '@primeng/themes/nora';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,7 +25,18 @@ import { NavigationHeaderComponent } from '../components/navigation-header/navig
     BrowserAnimationsModule,
     NavigationHeaderComponent,
   ],
-  providers: [provideHttpClient()],
+  providers: [
+    provideHttpClient(),
+    provideAnimationsAsync(),
+    providePrimeNG({
+      theme: {
+        preset: Nora,
+        options: {
+          darkModeSelector: 'none',
+        },
+      },
+    }),
+  ],
   exports: [],
   bootstrap: [AppComponent],
 })
