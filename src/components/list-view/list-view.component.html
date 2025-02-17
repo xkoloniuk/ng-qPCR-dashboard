@@ -15,10 +15,12 @@
       <td>{{ file.fileInfo.fileName }}</td>
       <td>{{ file.fileInfo.runStarted | date }}</td>
       <td [routerLink]="['/run', file.fileInfo.fileName]"
-          class="cursor-pointer "> Open table
+          class="cursor-pointer ">
+        <p-button label="Open table" severity="secondary"></p-button>
       </td>
       <td [routerLink]="['/plate', file.fileInfo.fileName]"
-          class="cursor-pointer "> Open plate
+          class="cursor-pointer ">
+        <p-button label="Open plate" severity="secondary"></p-button>
       </td>
     </tr>
   </ng-template>
