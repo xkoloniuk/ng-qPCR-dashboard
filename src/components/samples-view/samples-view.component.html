@@ -1,7 +1,13 @@
 <div class="flex justify-content-center">
 
-  <p-table #samplesTable [globalFilterFields]="['sample']" [sortOrder]="-1" [tableStyle]="{ 'min-width': '50rem' }"
+  <p-table #samplesTable [globalFilterFields]="['sample']" [paginator]="true" [rowsPerPageOptions]="[5, 10, 20]"
+           [rows]="5"
+           [showCurrentPageReport]="true"
+           [sortOrder]="-1"
+
+           [tableStyle]="{ 'min-width': '50rem' }"
            [value]="(samples$ | async) ?? []"
+           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} samples"
            dataKey="sample.sample"
            sortField="sample"
            styleClass="p-datatable-striped">
